@@ -5,6 +5,8 @@ import { createHttpLink } from 'apollo-link-http';
 import { config } from 'dotenv';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
+import RidesTableContainer from './RidesTableContainer';
+import './App.css';
 
 const env = config();
 
@@ -22,14 +24,14 @@ const httpLink = createHttpLink({ uri: process.env.REACT_APP_GRAPH_ENDPOINT });
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: httpLink
+  link: httpLink,
 });
 
 class App extends React.Component {
   public render() {
     return (
       <ApolloProvider client={client}>
-        <div>Hello</div>
+        <RidesTableContainer />
       </ApolloProvider>
     );
   }
