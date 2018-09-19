@@ -2,4 +2,9 @@
 
 .App {
   text-align: center;
+  display: flex;
+}
+
+#search-input {
+  min-height: 0;
 }

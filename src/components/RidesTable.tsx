@@ -7,14 +7,14 @@ import { ColumnProps } from 'antd/lib/table';
 import moment from 'moment';
 
 interface RidesTableProps {
-  data: Data | undefined;
+  data: TableData[];
 }
 
 type State = Readonly<{
-  num: number;
+  tableData: TableData[];
 }>;
 
-interface TableData {
+export interface TableData {
   date: string;
   type: string;
   student: string;
@@ -36,9 +36,10 @@ function outputRideType(type: string) {
 }
 
 function compressRide(ride: Ride, type: string) {
-  const { id, pickupRangeStart, pickupRangeEnd, route } = ride;
+  const { id, pickupRangeStart, pickupRangeEnd, route, status } = ride;
   let driver: string | null = 'N/A';
   let carName: string | null = 'N/A';
+  // This isn't ideal -- would like to replace with optional chaining if possible
   if (route) {
     if (route.shift) {
       if (route.shift.members) {
@@ -55,6 +56,7 @@ function compressRide(ride: Ride, type: string) {
   const date = moment(pickupRangeStart).format('YYYY-MM-DD');
   return {
     id,
+    status,
     date,
     type,
     student,
@@ -69,24 +71,19 @@ class AntTable extends Table<TableData> {}
 
 class RidesTable extends Component<RidesTableProps, State> {
   readonly state: State = {
-    num: 0,
+    tableData: [],
   };
-
-  private formatTableData(pickupRides: Ride[], dropOffRides: Ride[]) {
-    const dropoffs = dropOffRides.map(ride => {
-      return compressRide(ride, 'Dropoff');
-    });
-    const pickups = pickupRides.map(ride => {
-      return compressRide(ride, 'Pickup');
-    });
-    return dropoffs.concat(pickups);
-  }
 
   private columns = (): Array<ColumnProps<TableData>> => [
     {
       dataIndex: 'type',
       title: 'Ride Type',
       render: type => outputRideType(type),
+      width: 150,
+    },
+    {
+      dataIndex: 'status',
+      title: 'Status',
       width: 150,
     },
     {
@@ -120,15 +117,12 @@ class RidesTable extends Component<RidesTableProps, State> {
     if (!this.props.data) {
       return <div>Loading</div>;
     }
-
-    const { pickupRides, dropOffRides } = this.props.data.Location;
-    console.log(this.formatTableData(pickupRides, dropOffRides));
     return (
       <AntTable
         pagination={false}
         rowKey="id"
         columns={this.columns()}
-        dataSource={this.formatTableData(pickupRides, dropOffRides)}
+        dataSource={this.props.data}
       />
     );
   }

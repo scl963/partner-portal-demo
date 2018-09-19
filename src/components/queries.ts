@@ -1,11 +1,12 @@
 import gql from 'graphql-tag';
 
-const RIDES_QUERY = gql`
-  query {
-    Location(id: "cjl2mqtpe230e0160u1wn2zgx") {
+export const RIDES_QUERY = gql`
+  query ridesQuery($start: DateTime!, $end: DateTime!) {
+    Location(id: "cj294mriiq7bk0179n9qxb1q1") {
       title
-      pickupRides {
+      pickupRides(filter: { pickupRangeStart_gt: $start, pickupRangeStart_lt: $end }) {
         id
+        status
         route {
           id
           shift {
@@ -28,7 +29,7 @@ const RIDES_QUERY = gql`
           lastName
         }
       }
-      dropOffRides {
+      dropOffRides(filter: { pickupRangeStart_gt: $start, pickupRangeStart_lt: $end }) {
         id
         route {
           id
@@ -54,5 +55,3 @@ const RIDES_QUERY = gql`
     }
   }
 `;
-
-export default RIDES_QUERY;
