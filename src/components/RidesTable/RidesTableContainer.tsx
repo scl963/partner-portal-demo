@@ -2,11 +2,11 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { Icon } from 'antd';
-import { Data, Ride, TableData } from '../types';
+import { Data, Ride, TableData } from '../../types';
 import RidesTable from './RidesTable';
 import TableTools from './TableTools';
 import { RIDES_QUERY } from './queries';
-import { filterTimes, compressRide } from './utils';
+import { filterTimes, compressRide } from '../utils';
 
 const today: string = moment().format('YYYY-MM-DD');
 const tomorrow: string = moment()
@@ -69,7 +69,7 @@ class RidesTableContainer extends Component<{}, State> {
     this.setState({ filter });
   };
 
-  // This filters first by ride type, then passes all rides of that type to the time filter func
+  // This filters first by ride type, then passes all rides of that type to the time filter function
   private applyFilters = (tableData: TableData[]) => {
     const { filter } = this.state;
     if (filter.types === 'allTypes' && filter.times === 'allTimes') {

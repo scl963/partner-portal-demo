@@ -1,11 +1,12 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { setContext } from 'apollo-link-context';
+import AppRouter from '../router/AppRouter';
 import { createHttpLink } from 'apollo-link-http';
 import { config } from 'dotenv';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
-import RidesTableContainer from './RidesTableContainer';
+import RidesTableContainer from './RidesTable/RidesTableContainer';
 import './App.css';
 
 const env = config();
@@ -31,7 +32,7 @@ class App extends React.Component {
   public render() {
     return (
       <ApolloProvider client={client}>
-        <RidesTableContainer />
+        <AppRouter />
       </ApolloProvider>
     );
   }

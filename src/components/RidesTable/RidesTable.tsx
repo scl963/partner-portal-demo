@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Icon, TimePicker } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
-import { outputRideType } from './utils';
+import { outputRideType } from '../utils';
 import Fuse from 'fuse.js';
 
 interface RidesTableProps {
