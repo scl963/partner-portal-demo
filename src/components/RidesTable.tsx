@@ -1,13 +1,12 @@
-import gql from 'graphql-tag';
 import React, { Component } from 'react';
-import { graphql, Query } from 'react-apollo';
-import { Data, Ride, PickupMember } from '../types';
 import { Table, Icon, TimePicker } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
-import moment from 'moment';
+import { outputRideType } from './utils';
+import Fuse from 'fuse.js';
 
 interface RidesTableProps {
   data: TableData[];
+  searchValue: string;
 }
 
 type State = Readonly<{
@@ -20,51 +19,6 @@ export interface TableData {
   student: string;
   pickupRangeStart: string;
   pickupRangeEnd: string;
-}
-
-function outputRideType(type: string) {
-  const direction = type === 'Pickup' ? 'arrow-up' : 'arrow-down';
-  const color = type === 'Pickup' ? '#ffdb7a' : '#089111';
-  return (
-    <div>
-      <div>
-        <Icon type={direction} style={{ color, fontSize: '32px' }} />
-      </div>
-      <div>{type}</div>
-    </div>
-  );
-}
-
-function compressRide(ride: Ride, type: string) {
-  const { id, pickupRangeStart, pickupRangeEnd, route, status } = ride;
-  let driver: string | null = 'N/A';
-  let carName: string | null = 'N/A';
-  // This isn't ideal -- would like to replace with optional chaining if possible
-  if (route) {
-    if (route.shift) {
-      if (route.shift.members) {
-        driver = route.shift.members[0].firstName;
-      }
-      if (route.shift.vehicles) {
-        carName = route.shift.vehicles[0].carName;
-      }
-    }
-  }
-  const student = `${ride.pickupMember.firstName} ${ride.pickupMember.lastName}`;
-  const startTime = moment(pickupRangeStart).format('HH:mm');
-  const endTime = moment(pickupRangeEnd).format('HH:mm');
-  const date = moment(pickupRangeStart).format('YYYY-MM-DD');
-  return {
-    id,
-    status,
-    date,
-    type,
-    student,
-    pickupRangeStart: startTime,
-    pickupRangeEnd: endTime,
-    carName,
-    driver,
-  };
 }
 
 class AntTable extends Table<TableData> {}
@@ -114,16 +68,23 @@ class RidesTable extends Component<RidesTableProps, State> {
   ];
 
   public render() {
-    if (!this.props.data) {
-      return <div>Loading</div>;
+    const { data, searchValue } = this.props;
+    let tableData: TableData[] = data;
+    // Search by student name implemented here
+    if (searchValue.length) {
+      const options = {
+        keys: ['student'],
+        minMatchCharLength: 2,
+        distance: 100,
+        threshold: 0.2,
+        maxPatternLength: 32,
+      };
+      const fuse = new Fuse(tableData, options);
+      tableData = fuse.search(searchValue);
     }
+
     return (
-      <AntTable
-        pagination={false}
-        rowKey="id"
-        columns={this.columns()}
-        dataSource={this.props.data}
-      />
+      <AntTable pagination={false} rowKey="id" columns={this.columns()} dataSource={tableData} />
     );
   }
 }

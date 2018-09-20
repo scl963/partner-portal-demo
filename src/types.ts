@@ -50,3 +50,11 @@ export interface Data {
 export interface Response {
   data: Data;
 }
+
+export interface TableData {
+  date: string;
+  type: string;
+  student: string;
+  pickupRangeStart: string;
+  pickupRangeEnd: string;
+}

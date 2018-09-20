@@ -1,13 +1,12 @@
 import moment from 'moment';
-import gql from 'graphql-tag';
 import React, { Component } from 'react';
-import { graphql, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { Icon } from 'antd';
-import { Data, Ride } from '../types';
-import RidesTable, { TableData } from './RidesTable';
+import { Data, Ride, TableData } from '../types';
+import RidesTable from './RidesTable';
 import TableTools from './TableTools';
 import { RIDES_QUERY } from './queries';
-import { SelectValue } from 'antd/lib/select';
+import { filterTimes, compressRide } from './utils';
 
 const today: string = moment().format('YYYY-MM-DD');
 const tomorrow: string = moment()
@@ -23,6 +22,7 @@ type State = Readonly<{
   startDate: string;
   endDate: string;
   filter: Filter;
+  searchValue: string;
 }>;
 
 interface Variables {
@@ -32,56 +32,16 @@ interface Variables {
 
 class RidesForDayQuery extends Query<Data, Variables> {}
 
-function filterTimes(rides: TableData[], timeFilter: string) {
-  console.log(timeFilter);
-  if (timeFilter === 'morning') {
-    return rides.filter(ride => Number(ride.pickupRangeStart.slice(0, 2)) < 12);
-  } else if (timeFilter === 'afternoon') {
-    return rides.filter(ride => Number(ride.pickupRangeStart.slice(0, 2)) > 12);
-  } else {
-    return rides;
-  }
-}
-
-function compressRide(ride: Ride, type: string) {
-  const { id, pickupRangeStart, pickupRangeEnd, route, status } = ride;
-  let driver: string | null = 'N/A';
-  let carName: string | null = 'N/A';
-  // This isn't ideal -- would like to replace with optional chaining if possible
-  if (route) {
-    if (route.shift) {
-      if (route.shift.members) {
-        driver = route.shift.members[0].firstName;
-      }
-      if (route.shift.vehicles) {
-        carName = route.shift.vehicles[0].carName;
-      }
-    }
-  }
-  const student = `${ride.pickupMember.firstName} ${ride.pickupMember.lastName}`;
-  const startTime = moment(pickupRangeStart).format('HH:mm');
-  const endTime = moment(pickupRangeEnd).format('HH:mm');
-  const date = moment(pickupRangeStart).format('YYYY-MM-DD');
-  return {
-    id,
-    status,
-    date,
-    type,
-    student,
-    pickupRangeStart: startTime,
-    pickupRangeEnd: endTime,
-    carName,
-    driver,
-  };
-}
-
 class RidesTableContainer extends Component<{}, State> {
   readonly state: State = {
     startDate: today,
     endDate: tomorrow,
     filter: { times: 'allTimes', types: 'allTypes' },
+    searchValue: '',
   };
 
+  // This method is triggered by arrow buttons next to the date and moves start and end date by one
+  // day at a time in either direction
   private moveDate = (direction: string) => {
     const newDate = moment(this.state.startDate);
     if (direction === 'left') {
@@ -97,13 +57,19 @@ class RidesTableContainer extends Component<{}, State> {
     });
   };
 
-  private changeFilter = (property: string, evt: any) => {
-    console.log(evt);
+  private handleSearch = (searchValue: string) => {
+    this.setState({ searchValue });
+  };
+
+  // Property controls which state filter is changed. Value comes from the select menus and gets
+  // passed in as the new filter option
+  private changeFilter = (property: string, value: any) => {
     const { filter } = this.state;
-    filter[property] = evt;
+    filter[property] = value;
     this.setState({ filter });
   };
 
+  // This filters first by ride type, then passes all rides of that type to the time filter func
   private applyFilters = (tableData: TableData[]) => {
     const { filter } = this.state;
     if (filter.types === 'allTypes' && filter.times === 'allTimes') {
@@ -120,6 +86,7 @@ class RidesTableContainer extends Component<{}, State> {
     }
   };
 
+  // Combines pickups and dropoffs and formats data for Ant Table component
   private formatTableData(pickupRides: Ride[], dropOffRides: Ride[]) {
     const dropoffs = dropOffRides.map(ride => {
       return compressRide(ride, 'Dropoff');
@@ -138,6 +105,7 @@ class RidesTableContainer extends Component<{}, State> {
           day={moment(startDate).format('dddd, MMMM Do')}
           moveDate={this.moveDate}
           changeFilter={this.changeFilter}
+          handleSearch={this.handleSearch}
         />
         <RidesForDayQuery query={RIDES_QUERY} variables={{ start: startDate, end: endDate }}>
           {({ loading, data, error }) => {
@@ -153,9 +121,9 @@ class RidesTableContainer extends Component<{}, State> {
               return `Error! ${error.message}`;
             }
 
-            console.log(data);
             if (data) {
               const { title, pickupRides, dropOffRides } = data.Location;
+              const { searchValue } = this.state;
               const formattedData = this.formatTableData(pickupRides, dropOffRides);
               const tableData = this.applyFilters(formattedData);
               return (
@@ -163,7 +131,7 @@ class RidesTableContainer extends Component<{}, State> {
                   <div style={{ textAlign: 'center' }}>
                     <h1>{title} Daily Roster</h1>
                   </div>
-                  <RidesTable data={tableData} />
+                  <RidesTable data={tableData} searchValue={searchValue} />
                 </div>
               );
             } else {

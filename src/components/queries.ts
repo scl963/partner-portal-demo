@@ -31,6 +31,7 @@ export const RIDES_QUERY = gql`
       }
       dropOffRides(filter: { pickupRangeStart_gt: $start, pickupRangeStart_lt: $end }) {
         id
+        status
         route {
           id
           shift {

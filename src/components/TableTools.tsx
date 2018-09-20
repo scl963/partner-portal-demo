@@ -8,7 +8,8 @@ const { Search } = Input;
 interface ToolsProps {
   day: string;
   moveDate: (direction: string) => void;
-  changeFilter: (property: string, evt: any) => void;
+  changeFilter: (property: string, value: any) => void;
+  handleSearch: (searchValue: string) => void;
 }
 
 const TableTools: SFC<ToolsProps> = props => {
@@ -17,7 +18,7 @@ const TableTools: SFC<ToolsProps> = props => {
       <Select
         defaultValue="allTimes"
         style={{ width: 200 }}
-        onChange={(evt: any) => props.changeFilter('times', evt)}
+        onChange={(value: any) => props.changeFilter('times', value)}
       >
         <Option value="allTimes">All Times</Option>
         <Option value="morning">Morning</Option>
@@ -26,7 +27,7 @@ const TableTools: SFC<ToolsProps> = props => {
       <Select
         defaultValue="allTypes"
         style={{ width: 200 }}
-        onChange={(evt: any) => props.changeFilter('types', evt)}
+        onChange={(value: any) => props.changeFilter('types', value)}
       >
         <Option value="allTypes">All Ride Types</Option>
         <Option value="pickups">Pickups</Option>
@@ -45,7 +46,7 @@ const TableTools: SFC<ToolsProps> = props => {
         id="search-input"
         size="default"
         placeholder="Search Passengers"
-        onSearch={value => console.log(value)}
+        onChange={(evt: any) => props.handleSearch(evt.target.value)}
         style={{ width: 200 }}
       />
     </Row>
