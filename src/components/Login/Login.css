@@ -4,10 +4,6 @@
   height: 100vh;
 }
 
-.form-field-error {
-  color: #dc2929;
-  font-weight: 100;
-}
 .required-star {
   color: #dc2929;
 }

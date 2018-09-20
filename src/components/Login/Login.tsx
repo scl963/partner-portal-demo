@@ -11,11 +11,6 @@ type State = Readonly<{
   password: string;
 }>;
 
-const formItemLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 14 },
-};
-
 class Login extends Component<{}, State> {
   state: State = {
     email: '',
