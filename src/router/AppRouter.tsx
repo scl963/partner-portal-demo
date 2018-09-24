@@ -1,15 +1,10 @@
 import React, { Component, SFC } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  RouteComponentProps,
-  Link,
-  withRouter,
-} from 'react-router-dom';
-import { Layout, Menu, Avatar, Icon, Button } from 'antd';
+import { BrowserRouter as Router, Route, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Layout, Avatar, Button } from 'antd';
 import RidesTableContainer from '../components/RidesTable/RidesTableContainer';
 import Login from '../components/Login/Login';
-import { removeAuthToken, setAuthToken, isAuthenticated } from '../utils/authUtils';
+import { removeAuthToken, isAuthenticated } from '../utils/authUtils';
+import PrivateRoute from './PrivateRoute';
 import SheprdIcon from '../common/img/sheprd_icon.png';
 import SheprdLogo from '../common/img/sheprd_logo.png';
 
@@ -36,18 +31,30 @@ class AppLayout extends Component<RouteComponentProps<{}>, State> {
     >
       <Avatar src={SheprdIcon} shape="square" />
       <img src={SheprdLogo} width="66px" height="20px" />
+      <Button
+        onClick={this.logout}
+        style={{ float: 'right', marginTop: '15px', marginRight: '0px' }}
+      >
+        Log Out
+      </Button>
     </Layout.Header>
   );
 
   render() {
     return (
-      <Layout>
-        {this.renderMenuBar()}
-        <Layout.Content>
-          <Route exact={true} path="/login" component={Login} />
-          <Route path="/dailyRoster" component={RidesTableContainer} />
-        </Layout.Content>
-      </Layout>
+      <div>
+        <Route
+          path="/login"
+          exact={true}
+          render={props => <Login onAuthenticated={this.toggleIsAuthenticated} {...props} />}
+        />
+        <Layout>
+          {isAuthenticated() && this.renderMenuBar()}
+          <Layout.Content>
+            <PrivateRoute exact={true} path="/dailyRoster" component={RidesTableContainer} />
+          </Layout.Content>
+        </Layout>
+      </div>
     );
   }
 }

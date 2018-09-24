@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const RIDES_QUERY = gql`
-  query ridesQuery($start: DateTime!, $end: DateTime!) {
-    Location(id: "cj294mriiq7bk0179n9qxb1q1") {
+  query ridesQuery($start: DateTime!, $end: DateTime!, $locationId: ID!) {
+    Location(id: $locationId) {
       title
       pickupRides(filter: { pickupRangeStart_gt: $start, pickupRangeStart_lt: $end }) {
         id

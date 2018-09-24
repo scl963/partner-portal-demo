@@ -8,6 +8,7 @@
     "apollo-client": "^2.4.2",
     "apollo-link-context": "^1.0.8",
     "apollo-link-http": "^1.5.4",
+    "axios": "^0.18.0",
     "babel-loader": "^8.0.2",
     "babel-plugin-emotion": "^9.2.8",
     "babel-preset-env": "^1.7.0",

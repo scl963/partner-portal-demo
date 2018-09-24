@@ -7,6 +7,7 @@ import RidesTable from './RidesTable';
 import TableTools from './TableTools';
 import { RIDES_QUERY } from './queries';
 import { filterTimes, compressRide } from '../utils';
+import { getLocation } from '../../utils/authUtils';
 
 const today: string = moment().format('YYYY-MM-DD');
 const tomorrow: string = moment()
@@ -23,11 +24,14 @@ type State = Readonly<{
   endDate: string;
   filter: Filter;
   searchValue: string;
+  locationId: string;
+  locationTitle: string;
 }>;
 
 interface Variables {
   start: string;
   end: string;
+  locationId: string;
 }
 
 class RidesForDayQuery extends Query<Data, Variables> {}
@@ -38,7 +42,14 @@ class RidesTableContainer extends Component<{}, State> {
     endDate: tomorrow,
     filter: { times: 'allTimes', types: 'allTypes' },
     searchValue: '',
+    locationId: '',
+    locationTitle: '',
   };
+
+  componentDidMount() {
+    const locationId = getLocation();
+    this.setState({ locationId });
+  }
 
   // This method is triggered by arrow buttons next to the date and moves start and end date by one
   // day at a time in either direction
@@ -98,7 +109,7 @@ class RidesTableContainer extends Component<{}, State> {
   }
 
   render() {
-    const { startDate, endDate, filter } = this.state;
+    const { startDate, endDate, filter, locationId, locationTitle } = this.state;
     return (
       <div>
         <TableTools
@@ -107,8 +118,12 @@ class RidesTableContainer extends Component<{}, State> {
           changeFilter={this.changeFilter}
           handleSearch={this.handleSearch}
         />
-        <RidesForDayQuery query={RIDES_QUERY} variables={{ start: startDate, end: endDate }}>
+        <RidesForDayQuery
+          query={RIDES_QUERY}
+          variables={{ start: startDate, end: endDate, locationId }}
+        >
           {({ loading, data, error }) => {
+            console.log(data);
             if (loading) {
               return (
                 <div style={{ display: 'flex', textAlign: 'center' }}>
@@ -122,16 +137,13 @@ class RidesTableContainer extends Component<{}, State> {
             }
 
             if (data) {
-              const { title, pickupRides, dropOffRides } = data.Location;
+              const { pickupRides, dropOffRides, title } = data.Location;
               const { searchValue } = this.state;
               const formattedData = this.formatTableData(pickupRides, dropOffRides);
               const tableData = this.applyFilters(formattedData);
               return (
                 <div>
-                  <div style={{ textAlign: 'center' }}>
-                    <h1>{title} Daily Roster</h1>
-                  </div>
-                  <RidesTable data={tableData} searchValue={searchValue} />
+                  <RidesTable data={tableData} searchValue={searchValue} loading={loading} />
                 </div>
               );
             } else {

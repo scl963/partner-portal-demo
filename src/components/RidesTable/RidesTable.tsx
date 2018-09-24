@@ -7,6 +7,7 @@ import Fuse from 'fuse.js';
 interface RidesTableProps {
   data: TableData[];
   searchValue: string;
+  loading: boolean;
 }
 
 type State = Readonly<{
