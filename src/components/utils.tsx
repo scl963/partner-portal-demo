@@ -17,14 +17,17 @@ export function compressRide(ride: Ride, type: string) {
   const { id, pickupRangeStart, pickupRangeEnd, route, status } = ride;
   let driver: string | null = 'N/A';
   let carName: string | null = 'N/A';
+  let licensePlate: string | null = 'N/A';
   // This isn't ideal -- would like to replace with optional chaining if possible
   if (route) {
     if (route.shift) {
       if (route.shift.members) {
-        driver = route.shift.members[0].firstName;
+        console.log(route.shift.members[0]);
+        driver = `${route.shift.members[0].firstName} ${route.shift.members[0].lastName}`;
       }
       if (route.shift.vehicles) {
         carName = route.shift.vehicles[0].carName;
+        licensePlate = route.shift.vehicles[0].licensePlate;
       }
     }
   }
@@ -41,6 +44,7 @@ export function compressRide(ride: Ride, type: string) {
     pickupRangeStart: startTime,
     pickupRangeEnd: endTime,
     carName,
+    licensePlate,
     driver,
   };
 }

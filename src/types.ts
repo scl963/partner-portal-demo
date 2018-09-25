@@ -6,12 +6,14 @@ export interface PickupMember {
 
 export interface Member {
   id: string;
-  firstName: string | null;
+  firstName: string;
+  lastName: string;
 }
 
 export interface Vehicle {
   id: string | null;
-  carName: string | null;
+  carName: string;
+  licensePlate: string;
 }
 
 export interface Shift {
@@ -55,6 +57,9 @@ export interface TableData {
   date: string;
   type: string;
   student: string;
+  driver: string;
+  carName: string;
+  licensePlate: string;
   pickupRangeStart: string;
   pickupRangeEnd: string;
 }

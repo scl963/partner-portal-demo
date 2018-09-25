@@ -14,10 +14,12 @@ export const RIDES_QUERY = gql`
             vehicles {
               id
               carName
+              licensePlate
             }
             members {
               id
               firstName
+              lastName
             }
           }
         }
@@ -39,10 +41,12 @@ export const RIDES_QUERY = gql`
             vehicles {
               id
               carName
+              licensePlate
             }
             members {
               id
               firstName
+              lastName
             }
           }
         }

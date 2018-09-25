@@ -10,8 +10,6 @@ import SheprdLogo from '../../common/img/sheprd_logo.png';
 import { handleToken, setLocation } from '../../utils/authUtils';
 import { userQuery } from '../../common/queries';
 
-console.log(process.env);
-
 const loginURL = `${process.env.REACT_APP_SERVER_DOMAIN}/loginUser`;
 
 const ERROR_MESSAGE = {

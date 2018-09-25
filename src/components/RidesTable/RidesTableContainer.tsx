@@ -111,46 +111,63 @@ class RidesTableContainer extends Component<{}, State> {
   render() {
     const { startDate, endDate, filter, locationId, locationTitle } = this.state;
     return (
-      <div>
-        <TableTools
-          day={moment(startDate).format('dddd, MMMM Do')}
-          moveDate={this.moveDate}
-          changeFilter={this.changeFilter}
-          handleSearch={this.handleSearch}
-        />
-        <RidesForDayQuery
-          query={RIDES_QUERY}
-          variables={{ start: startDate, end: endDate, locationId }}
-        >
-          {({ loading, data, error }) => {
-            console.log(data);
-            if (loading) {
-              return (
-                <div style={{ display: 'flex', textAlign: 'center' }}>
-                  <Icon type="loading" style={{ fontSize: '60px', textAlign: 'center' }} />
-                </div>
-              );
-            }
-
-            if (error) {
-              return `Error! ${error.message}`;
-            }
-
-            if (data) {
-              const { pickupRides, dropOffRides, title } = data.Location;
-              const { searchValue } = this.state;
-              const formattedData = this.formatTableData(pickupRides, dropOffRides);
-              const tableData = this.applyFilters(formattedData);
-              return (
-                <div>
-                  <RidesTable data={tableData} searchValue={searchValue} loading={loading} />
-                </div>
-              );
-            } else {
-              return <div>There is no data to display</div>;
-            }
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <h1>Daily Roster</h1>
+        <div
+          style={{
+            width: '80vw',
+            minHeight: '80vh',
+            maxHeight: '80vh',
+            marginBottom: '80px',
+            background: 'white',
+            borderRadius: '1.5em',
+            overflow: 'auto',
           }}
-        </RidesForDayQuery>
+        >
+          <TableTools
+            day={moment(startDate).format('dddd, MMMM Do')}
+            moveDate={this.moveDate}
+            changeFilter={this.changeFilter}
+            handleSearch={this.handleSearch}
+          />
+          <RidesForDayQuery
+            query={RIDES_QUERY}
+            variables={{ start: startDate, end: endDate, locationId }}
+          >
+            {({ loading, data, error }) => {
+              if (loading) {
+                return (
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      marginTop: '20em',
+                    }}
+                  >
+                    <Icon type="loading" style={{ fontSize: '60px', display: 'inline-block' }} />
+                  </div>
+                );
+              }
+
+              if (error) {
+                return `Error! ${error.message}`;
+              }
+
+              if (data) {
+                const { pickupRides, dropOffRides, title } = data.Location;
+                const { searchValue } = this.state;
+                const formattedData = this.formatTableData(pickupRides, dropOffRides);
+                const tableData = this.applyFilters(formattedData);
+                return (
+                  <div>
+                    <RidesTable data={tableData} searchValue={searchValue} loading={loading} />
+                  </div>
+                );
+              } else {
+                return <div>There is no data to display</div>;
+              }
+            }}
+          </RidesForDayQuery>
+        </div>
       </div>
     );
   }

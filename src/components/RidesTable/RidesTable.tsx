@@ -3,6 +3,7 @@ import { Table, Icon, TimePicker } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { outputRideType } from '../utils';
 import Fuse from 'fuse.js';
+import { TableData } from '../../types';
 
 interface RidesTableProps {
   data: TableData[];
@@ -13,14 +14,6 @@ interface RidesTableProps {
 type State = Readonly<{
   tableData: TableData[];
 }>;
-
-export interface TableData {
-  date: string;
-  type: string;
-  student: string;
-  pickupRangeStart: string;
-  pickupRangeEnd: string;
-}
 
 class AntTable extends Table<TableData> {}
 
@@ -57,6 +50,11 @@ class RidesTable extends Component<RidesTableProps, State> {
       width: 150,
     },
     {
+      dataIndex: 'licensePlate',
+      title: 'License Plate',
+      width: 150,
+    },
+    {
       dataIndex: 'pickupRangeStart',
       title: 'Arrival',
       width: 150,
@@ -85,7 +83,13 @@ class RidesTable extends Component<RidesTableProps, State> {
     }
 
     return (
-      <AntTable pagination={false} rowKey="id" columns={this.columns()} dataSource={tableData} />
+      <AntTable
+        style={{ marginBottom: '20px', marginTop: '20px' }}
+        pagination={false}
+        rowKey="id"
+        columns={this.columns()}
+        dataSource={tableData}
+      />
     );
   }
 }
