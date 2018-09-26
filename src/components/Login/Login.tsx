@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import { RouteComponentProps, Redirect } from 'react-router';
 import SheprdIcon from '../../common/img/sheprd_icon.png';
 import SheprdLogo from '../../common/img/sheprd_logo.png';
-import { handleToken, setLocation } from '../../utils/authUtils';
+import { handleToken, setLocation, setLocationTitle } from '../../utils/authUtils';
 import { userQuery } from '../../common/queries';
 
 const loginURL = `${process.env.REACT_APP_SERVER_DOMAIN}/loginUser`;
@@ -65,8 +65,9 @@ class Login extends Component<Props, State> {
       if (user && user.member.locations[0]) {
         this.setState({ isLoggedIn: true });
         setLocation(user.member.locations[0].id);
+        setLocationTitle(user.member.locations[0].title);
       }
-      return <Redirect to="/dailyRoster" />;
+      return <Redirect to="/daily-roster" />;
     } catch (e) {
       console.error(e);
       return <Redirect to="login" />;

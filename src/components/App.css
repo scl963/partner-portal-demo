@@ -5,6 +5,10 @@
   display: flex;
 }
 
+body {
+  font-family: 'Nunito', sans-serif !important;
+}
+
 #search-input {
   min-height: 0;
 }

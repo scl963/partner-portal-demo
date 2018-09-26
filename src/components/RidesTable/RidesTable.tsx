@@ -4,6 +4,7 @@ import { ColumnProps } from 'antd/lib/table';
 import { outputRideType } from '../utils';
 import Fuse from 'fuse.js';
 import { TableData } from '../../types';
+import './RidesTable.css';
 
 interface RidesTableProps {
   data: TableData[];
@@ -27,7 +28,7 @@ class RidesTable extends Component<RidesTableProps, State> {
       dataIndex: 'type',
       title: 'Ride Type',
       render: type => outputRideType(type),
-      width: 150,
+      width: 100,
     },
     {
       dataIndex: 'status',
@@ -83,13 +84,20 @@ class RidesTable extends Component<RidesTableProps, State> {
     }
 
     return (
-      <AntTable
-        style={{ marginBottom: '20px', marginTop: '20px' }}
-        pagination={false}
-        rowKey="id"
-        columns={this.columns()}
-        dataSource={tableData}
-      />
+      <div style={{ marginBottom: '20px' }}>
+        <AntTable
+          style={{
+            marginBottom: '30px',
+            marginTop: '20px',
+          }}
+          pagination={false}
+          rowKey="id"
+          size="small"
+          scroll={{ y: 575, x: 600 }}
+          columns={this.columns()}
+          dataSource={tableData}
+        />
+      </div>
     );
   }
 }

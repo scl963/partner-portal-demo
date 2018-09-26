@@ -22,6 +22,7 @@ class AppLayout extends Component<RouteComponentProps<{}>, State> {
 
   private logout = () => {
     removeAuthToken();
+    localStorage.clear();
     this.setState(toggleIsAuthenticated);
   };
 
@@ -51,7 +52,7 @@ class AppLayout extends Component<RouteComponentProps<{}>, State> {
         <Layout>
           {isAuthenticated() && this.renderMenuBar()}
           <Layout.Content>
-            <PrivateRoute exact={true} path="/dailyRoster" component={RidesTableContainer} />
+            <PrivateRoute exact={true} path="/daily-roster" component={RidesTableContainer} />
           </Layout.Content>
         </Layout>
       </div>

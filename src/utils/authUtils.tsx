@@ -31,10 +31,8 @@ export function getMemberId() {
 export async function handleToken(apolloClient: any, token: string) {
   setAuthToken(token);
   const userQueryResponse = await apolloClient.query({ query: userQuery });
-  console.log(userQueryResponse.data);
   const { id, locations } = userQueryResponse.data.user.member;
   setMemberId(id);
-  console.log(locations);
 }
 
 export function setLocation(locationId: string) {
@@ -43,4 +41,12 @@ export function setLocation(locationId: string) {
 
 export function getLocation() {
   return localStorage.getItem(LOCATION_ID) || '';
+}
+
+export function setLocationTitle(locationTitle: string) {
+  localStorage.setItem(LOCATION_TITLE, locationTitle);
+}
+
+export function getLocationTitle() {
+  return localStorage.getItem(LOCATION_TITLE) || '';
 }

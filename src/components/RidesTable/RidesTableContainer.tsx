@@ -1,13 +1,14 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { Icon } from 'antd';
 import { Data, Ride, TableData } from '../../types';
 import RidesTable from './RidesTable';
-import TableTools from './TableTools';
+import TableTools from './TableTools/TableTools';
 import { RIDES_QUERY } from './queries';
 import { filterTimes, compressRide } from '../utils';
-import { getLocation } from '../../utils/authUtils';
+import { getLocation, getLocationTitle } from '../../utils/authUtils';
+import LoadingPage from '../LoadingPage/LoadingPage';
 
 const today: string = moment().format('YYYY-MM-DD');
 const tomorrow: string = moment()
@@ -24,9 +25,10 @@ type State = Readonly<{
   endDate: string;
   filter: Filter;
   searchValue: string;
-  locationId: string;
-  locationTitle: string;
 }>;
+
+const locationId = getLocation();
+const locationTitle = getLocationTitle();
 
 interface Variables {
   start: string;
@@ -42,14 +44,7 @@ class RidesTableContainer extends Component<{}, State> {
     endDate: tomorrow,
     filter: { times: 'allTimes', types: 'allTypes' },
     searchValue: '',
-    locationId: '',
-    locationTitle: '',
   };
-
-  componentDidMount() {
-    const locationId = getLocation();
-    this.setState({ locationId });
-  }
 
   // This method is triggered by arrow buttons next to the date and moves start and end date by one
   // day at a time in either direction
@@ -66,6 +61,14 @@ class RidesTableContainer extends Component<{}, State> {
       startDate,
       endDate,
     });
+  };
+
+  private handleDatePicker = (date: Moment) => {
+    const startDate = date.format('YYYY-MM-DD');
+    const endDate = moment(startDate)
+      .add(1, 'day')
+      .format('YYYY-MM-DD');
+    this.setState({ startDate, endDate });
   };
 
   private handleSearch = (searchValue: string) => {
@@ -108,11 +111,11 @@ class RidesTableContainer extends Component<{}, State> {
     return dropoffs.concat(pickups);
   }
 
-  render() {
-    const { startDate, endDate, filter, locationId, locationTitle } = this.state;
+  private renderTable() {
+    const { startDate, endDate } = this.state;
     return (
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <h1>Daily Roster</h1>
+        <h2 style={{ margin: '.5em' }}>{`${locationTitle} Daily Roster`}</h2>
         <div
           style={{
             width: '80vw',
@@ -121,7 +124,6 @@ class RidesTableContainer extends Component<{}, State> {
             marginBottom: '80px',
             background: 'white',
             borderRadius: '1.5em',
-            overflow: 'auto',
           }}
         >
           <TableTools
@@ -129,6 +131,7 @@ class RidesTableContainer extends Component<{}, State> {
             moveDate={this.moveDate}
             changeFilter={this.changeFilter}
             handleSearch={this.handleSearch}
+            handleDatePicker={this.handleDatePicker}
           />
           <RidesForDayQuery
             query={RIDES_QUERY}
@@ -136,16 +139,7 @@ class RidesTableContainer extends Component<{}, State> {
           >
             {({ loading, data, error }) => {
               if (loading) {
-                return (
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      marginTop: '20em',
-                    }}
-                  >
-                    <Icon type="loading" style={{ fontSize: '60px', display: 'inline-block' }} />
-                  </div>
-                );
+                return <LoadingPage />;
               }
 
               if (error) {
@@ -153,7 +147,7 @@ class RidesTableContainer extends Component<{}, State> {
               }
 
               if (data) {
-                const { pickupRides, dropOffRides, title } = data.Location;
+                const { pickupRides, dropOffRides } = data.Location;
                 const { searchValue } = this.state;
                 const formattedData = this.formatTableData(pickupRides, dropOffRides);
                 const tableData = this.applyFilters(formattedData);
@@ -170,6 +164,10 @@ class RidesTableContainer extends Component<{}, State> {
         </div>
       </div>
     );
+  }
+
+  render() {
+    return locationId && locationTitle && this.renderTable();
   }
 }
 
