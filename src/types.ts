@@ -54,7 +54,7 @@ export interface Response {
 }
 
 export interface TableData {
-  date: string;
+  status: string;
   type: string;
   student: string;
   driver: string;

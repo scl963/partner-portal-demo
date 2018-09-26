@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import { Icon } from 'antd';
+import { css } from 'react-emotion';
 import { Data, Ride, TableData } from '../../types';
 import RidesTable from './RidesTable';
 import TableTools from './TableTools/TableTools';
@@ -114,17 +114,38 @@ class RidesTableContainer extends Component<{}, State> {
   private renderTable() {
     const { startDate, endDate } = this.state;
     return (
-      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+      <div
+        className={css`
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          max-height: 100vh @media (max-width: 1366px) {
+            min-width: 100vw;
+          }
+          @media (max-height: 800) {
+            min-height: 100%;
+            max-height: 100%;
+          }
+        `}
+      >
         <h2 style={{ margin: '.5em' }}>{`${locationTitle} Daily Roster`}</h2>
         <div
-          style={{
-            width: '80vw',
-            minHeight: '80vh',
-            maxHeight: '80vh',
-            marginBottom: '80px',
-            background: 'white',
-            borderRadius: '1.5em',
-          }}
+          className={css`
+            width: 80vw;
+            min-height: 80vh;
+            max-height: 80vh;
+            margin-bottom: 160px;
+            background: white;
+            border-radius: 1.5em;
+            @media (max-width: 1366px) {
+              min-width: 100vw;
+              border-radius: 1.5em;
+            }
+            @media (max-height: 800) {
+              min-height: 100%;
+              max-height: 100%;
+            }
+          `}
         >
           <TableTools
             day={moment(startDate).format('dddd, MMMM Do')}
@@ -167,7 +188,7 @@ class RidesTableContainer extends Component<{}, State> {
   }
 
   render() {
-    return locationId && locationTitle && this.renderTable();
+    return locationId !== null && this.renderTable();
   }
 }
 

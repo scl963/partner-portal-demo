@@ -29,41 +29,49 @@ class RidesTable extends Component<RidesTableProps, State> {
       title: 'Ride Type',
       render: type => outputRideType(type),
       width: 100,
+      align: 'center',
     },
     {
       dataIndex: 'status',
       title: 'Status',
       width: 150,
+      align: 'center',
     },
     {
       dataIndex: 'student',
       title: 'Passenger',
       width: 150,
+      align: 'center',
     },
     {
       dataIndex: 'driver',
       title: 'Driver',
       width: 150,
+      align: 'center',
     },
     {
       dataIndex: 'carName',
       title: 'Vehicle',
       width: 150,
+      align: 'center',
     },
     {
       dataIndex: 'licensePlate',
       title: 'License Plate',
       width: 150,
+      align: 'center',
     },
     {
       dataIndex: 'pickupRangeStart',
       title: 'Arrival',
       width: 150,
+      align: 'center',
     },
     {
       dataIndex: 'pickupRangeEnd',
       title: 'Departure',
       width: 150,
+      align: 'center',
     },
   ];
 
@@ -86,9 +94,8 @@ class RidesTable extends Component<RidesTableProps, State> {
     return (
       <div style={{ marginBottom: '20px' }}>
         <AntTable
-          style={{
-            marginBottom: '30px',
-            marginTop: '20px',
+          rowClassName={(record, index) => {
+            return record.status === 'Canceled' ? 'canceled-row' : '';
           }}
           pagination={false}
           rowKey="id"

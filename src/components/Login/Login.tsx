@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import { RouteComponentProps, Redirect } from 'react-router';
 import SheprdIcon from '../../common/img/sheprd_icon.png';
 import SheprdLogo from '../../common/img/sheprd_logo.png';
-import { handleToken, setLocation, setLocationTitle } from '../../utils/authUtils';
+import { handleToken, setLocation, setLocationTitle, isAuthenticated } from '../../utils/authUtils';
 import { userQuery } from '../../common/queries';
 
 const loginURL = `${process.env.REACT_APP_SERVER_DOMAIN}/loginUser`;
@@ -75,9 +75,8 @@ class Login extends Component<Props, State> {
   };
 
   render() {
-    const { isLoggedIn } = this.state;
-    return isLoggedIn ? (
-      <Redirect to="/dailyRoster" />
+    return isAuthenticated() ? (
+      <Redirect to="/daily-roster" />
     ) : (
       <ApolloConsumer>
         {client => (

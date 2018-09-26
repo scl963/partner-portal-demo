@@ -43,7 +43,7 @@ const TableTools: SFC<ToolsProps> = props => {
         </div>
         <div className="day-shifter">
           <Icon type="left" className="day-shifter-icon" onClick={() => props.moveDate('left')} />
-          <h2>{props.day}</h2>
+          <h2 style={{ minWidth: '300px', maxWidth: '300px', textAlign: 'center' }}>{props.day}</h2>
           <Icon type="right" className="day-shifter-icon" onClick={() => props.moveDate('right')} />
         </div>
         <Search

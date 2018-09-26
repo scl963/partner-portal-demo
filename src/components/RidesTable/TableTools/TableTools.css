@@ -11,24 +11,42 @@
 }
 
 .day-shifter-icon {
-  font-size: 20px;
-  padding: 5px;
+  font-size: 25px;
+  width: 30px !important;
+  height: 30px !important;
 }
 
 .day-shifter-icon :hover {
   background-color: #e0ebff;
+  width: 28px !important;
+  height: 28px !important;
   border-radius: 0.3em;
 }
 
-.tools-search {
-  width: 200px;
-  margin: 1em;
-  margin-left: auto;
+.ant-input-search {
+  width: 200px !important;
+  margin-left: auto !important;
+  margin-right: 2em !important;
 }
 
-@media (max-width: 813px) {
+#search-input {
+  width: 194px !important;
+  margin-left: auto !important;
+  margin-right: 2em !important;
+}
+
+@media (max-width: 1366px) {
+  .ant-select {
+    margin-bottom: 1em !important;
+  }
   .tools-container {
     width: 100% !important;
+  }
+  .day-shifter {
+    margin-left: 1em;
+  }
+  .ant-input-search {
+    margin-left: 1em !important;
   }
   .tools-container {
     height: 100% !important;
