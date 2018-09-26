@@ -45,12 +45,12 @@ export interface Location {
   dropOffRides: Ride[];
 }
 
-export interface Data {
+export interface RideData {
   Location: Location;
 }
 
 export interface Response {
-  data: Data;
+  data: RideData;
 }
 
 export interface TableData {
@@ -62,4 +62,8 @@ export interface TableData {
   licensePlate: string;
   pickupRangeStart: string;
   pickupRangeEnd: string;
+}
+
+export interface DriverData {
+  allMembers: Member[];
 }

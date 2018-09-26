@@ -11,7 +11,6 @@ import RidesTableContainer from '../components/RidesTable/RidesTableContainer';
 import Login from '../components/Login/Login';
 import { removeAuthToken, isAuthenticated } from '../utils/authUtils';
 import PrivateRoute from './PrivateRoute';
-import DriverList from '../components/DriverList/DriverList';
 import SheprdIcon from '../common/img/sheprd_icon.png';
 import SheprdLogo from '../common/img/sheprd_logo.png';
 
@@ -57,7 +56,6 @@ class AppLayout extends Component<RouteComponentProps<{}>, State> {
           {isAuthenticated() && this.renderMenuBar()}
           <Layout.Content>
             <PrivateRoute exact={true} path="/daily-roster" component={RidesTableContainer} />
-            <PrivateRoute exact={true} path="/driver-list" component={DriverList} />
             <Route path="*">
               <Redirect to="/login" />
             </Route>

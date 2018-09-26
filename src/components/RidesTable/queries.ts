@@ -60,3 +60,13 @@ export const RIDES_QUERY = gql`
     }
   }
 `;
+
+export const DRIVER_QUERY = gql`
+  query {
+    allMembers(filter: { driverStatus: Active, firstName_gt: "", lastName_gt: "" }) {
+      id
+      firstName
+      lastName
+    }
+  }
+`;

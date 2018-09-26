@@ -1,14 +1,15 @@
 import moment, { Moment } from 'moment';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import { css } from 'react-emotion';
-import { Data, Ride, TableData } from '../../types';
+import { RideData, Ride, TableData } from '../../types';
 import RidesTable from './RidesTable';
 import TableTools from './TableTools/TableTools';
 import { RIDES_QUERY } from './queries';
 import { filterTimes, compressRide } from '../utils';
 import { getLocation, getLocationTitle } from '../../utils/authUtils';
 import LoadingPage from '../LoadingPage/LoadingPage';
+import { tableContainerStyle, tablePageStyle } from '../styles';
+import DriverList from '../DriverList';
 
 const today: string = moment().format('YYYY-MM-DD');
 const tomorrow: string = moment()
@@ -25,6 +26,7 @@ type State = Readonly<{
   endDate: string;
   filter: Filter;
   searchValue: string;
+  renderDriverList: boolean;
 }>;
 
 const locationId = getLocation();
@@ -36,7 +38,7 @@ interface Variables {
   locationId: string;
 }
 
-class RidesForDayQuery extends Query<Data, Variables> {}
+class RidesForDayQuery extends Query<RideData, Variables> {}
 
 class RidesTableContainer extends Component<{}, State> {
   readonly state: State = {
@@ -44,6 +46,12 @@ class RidesTableContainer extends Component<{}, State> {
     endDate: tomorrow,
     filter: { times: 'allTimes', types: 'allTypes' },
     searchValue: '',
+    renderDriverList: false,
+  };
+
+  private toggleDriverList = () => {
+    const { renderDriverList } = this.state;
+    this.setState({ renderDriverList: !renderDriverList });
   };
 
   // This method is triggered by arrow buttons next to the date and moves start and end date by one
@@ -101,7 +109,7 @@ class RidesTableContainer extends Component<{}, State> {
   };
 
   // Combines pickups and dropoffs and formats data for Ant Table component
-  private formatTableData(pickupRides: Ride[], dropOffRides: Ride[]) {
+  private formatStudentRoster(pickupRides: Ride[], dropOffRides: Ride[]) {
     const dropoffs = dropOffRides.map(ride => {
       return compressRide(ride, 'Dropoff');
     });
@@ -111,42 +119,12 @@ class RidesTableContainer extends Component<{}, State> {
     return dropoffs.concat(pickups);
   }
 
-  private renderTable() {
+  private renderStudentRoster() {
     const { startDate, endDate } = this.state;
     return (
-      <div
-        className={css`
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-          max-height: 100vh @media (max-width: 1366px) {
-            min-width: 100vw;
-          }
-          @media (max-height: 800) {
-            min-height: 100%;
-            max-height: 100%;
-          }
-        `}
-      >
+      <div className={tablePageStyle}>
         <h2 style={{ margin: '.5em' }}>{`${locationTitle} Daily Roster`}</h2>
-        <div
-          className={css`
-            width: 80vw;
-            min-height: 80vh;
-            max-height: 80vh;
-            margin-bottom: 160px;
-            background: white;
-            border-radius: 1.5em;
-            @media (max-width: 1366px) {
-              min-width: 100vw;
-              border-radius: 1.5em;
-            }
-            @media (max-height: 800) {
-              min-height: 100%;
-              max-height: 100%;
-            }
-          `}
-        >
+        <div className={tableContainerStyle}>
           <TableTools
             day={moment(startDate).format('dddd, MMMM Do')}
             moveDate={this.moveDate}
@@ -170,7 +148,7 @@ class RidesTableContainer extends Component<{}, State> {
               if (data) {
                 const { pickupRides, dropOffRides } = data.Location;
                 const { searchValue } = this.state;
-                const formattedData = this.formatTableData(pickupRides, dropOffRides);
+                const formattedData = this.formatStudentRoster(pickupRides, dropOffRides);
                 const tableData = this.applyFilters(formattedData);
                 return (
                   <div>
@@ -187,8 +165,27 @@ class RidesTableContainer extends Component<{}, State> {
     );
   }
 
+  private renderDriverList() {
+    return (
+      <div className={tablePageStyle}>
+        <h2 style={{ margin: '.5em' }}>Active Sheprd Drivers</h2>
+        <div className={tableContainerStyle}>
+          <DriverList />
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    return locationId !== null && this.renderTable();
+    const { renderDriverList } = this.state;
+    return (
+      <div>
+        <button onClick={this.toggleDriverList}>
+          {renderDriverList ? 'Show daily roster' : 'Show Active Driver List'}
+        </button>
+        {renderDriverList ? this.renderDriverList() : locationId && this.renderStudentRoster()}
+      </div>
+    );
   }
 }
 
