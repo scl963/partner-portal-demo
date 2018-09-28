@@ -3,7 +3,6 @@ import { ApolloClient } from 'apollo-client';
 import { setContext } from 'apollo-link-context';
 import AppRouter from '../router/AppRouter';
 import { createHttpLink } from 'apollo-link-http';
-import { config } from 'dotenv';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import HttpsRedirect from 'react-https-redirect';
@@ -13,7 +12,7 @@ import './App.css';
 
 const env = runtimeEnv();
 
-const httpLink = createHttpLink({ uri: process.env.REACT_APP_GRAPH_ENDPOINT });
+const httpLink = createHttpLink({ uri: env.REACT_APP_GRAPH_ENDPOINT });
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('auth_token');
