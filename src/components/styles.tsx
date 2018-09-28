@@ -4,7 +4,7 @@ export const tablePageStyle = css`
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-height: 100vh;
+  max-height: 93vh;
   @media (max-width: 1366px) {
     min-width: 100%;
   }

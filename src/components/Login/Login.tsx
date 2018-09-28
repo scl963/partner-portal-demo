@@ -33,19 +33,11 @@ import './Login.css';
 
 const FormItem = Form.Item;
 
-type State = Readonly<{
-  isLoggedIn: boolean;
-}>;
-
 interface Props extends RouteComponentProps<any> {
   onAuthenticated(): void;
 }
 
-class Login extends Component<Props, State> {
-  state: State = {
-    isLoggedIn: false,
-  };
-
+class Login extends Component<Props> {
   private handleSubmit = (client: ApolloClient<any>) => async (
     { email, password },
     { setSubmitting, setFieldError },

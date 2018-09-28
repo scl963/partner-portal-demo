@@ -63,7 +63,7 @@ class AppLayout extends Component<RouterProps, State> {
     }
   }
 
-  // Prevent call if on login screen
+  // Prevent call if on login screen but do call if previously logged in user comes back to site
   componentDidMount() {
     return isAuthenticated() && this.fetchAllMemberLocations();
   }
@@ -78,7 +78,7 @@ class AppLayout extends Component<RouterProps, State> {
     }
   }
 
-  // Only trigger fetch on login
+  // Only trigger location fetch on login
   componentDidUpdate(prevProps: any, prevState: State, snapshot: any) {
     if (snapshot) {
       this.fetchAllMemberLocations();
@@ -183,6 +183,13 @@ class AppLayout extends Component<RouterProps, State> {
                 padding: 16px;
               `}
             >
+              <PrivateRoute
+                exact={true}
+                path="/"
+                component={RidesTableContainer}
+                locationId={currLocationId}
+                locationTitle={currLocationTitle}
+              />
               <PrivateRoute
                 exact={true}
                 path="/daily-roster"
