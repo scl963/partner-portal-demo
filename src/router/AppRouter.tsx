@@ -63,7 +63,8 @@ class AppLayout extends Component<RouterProps, State> {
     }
   }
 
-  // Prevent call if on login screen but do call if previously logged in user comes back to site
+  // Prevent call if on login screen but do call if logged in user comes back to site without going
+  // through login
   componentDidMount() {
     return isAuthenticated() && this.fetchAllMemberLocations();
   }
@@ -141,15 +142,19 @@ class AppLayout extends Component<RouterProps, State> {
               <Menu.Item key="notes">
                 <Link to={'location-notes'}>Location Notes</Link>
               </Menu.Item>
-              <Menu.SubMenu key="allLocations" title={<span>Change Location</span>}>
-                {allLocations.map(l => {
-                  return (
-                    <Menu.Item key={l.id} onClick={() => this.changeLocation(l.id, l.title)}>
-                      {l.title}
-                    </Menu.Item>
-                  );
-                })}
-              </Menu.SubMenu>
+              {allLocations.length > 1 ? (
+                <Menu.SubMenu key="allLocations" title={<span>Change Location</span>}>
+                  {allLocations.map(l => {
+                    return (
+                      <Menu.Item key={l.id} onClick={() => this.changeLocation(l.id, l.title)}>
+                        {l.title}
+                      </Menu.Item>
+                    );
+                  })}
+                </Menu.SubMenu>
+              ) : (
+                ''
+              )}
             </Menu.SubMenu>
             <Menu.Item
               className={css`

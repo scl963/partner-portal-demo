@@ -7,6 +7,7 @@ import { config } from 'dotenv';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import './App.css';
+import HttpsRedirect from 'react-https-redirect';
 
 const env = config();
 
@@ -30,9 +31,11 @@ const client = new ApolloClient({
 class App extends React.Component {
   public render() {
     return (
-      <ApolloProvider client={client}>
-        <AppRouter />
-      </ApolloProvider>
+      <HttpsRedirect>
+        <ApolloProvider client={client}>
+          <AppRouter />
+        </ApolloProvider>
+      </HttpsRedirect>
     );
   }
 }
