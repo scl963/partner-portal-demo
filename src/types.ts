@@ -1,3 +1,8 @@
+export interface GenericComponentProps {
+  locationId: string;
+  locationTitle: string;
+}
+
 export interface PickupMember {
   id: string;
   firstName: string;
@@ -8,6 +13,7 @@ export interface Member {
   id: string;
   firstName: string;
   lastName: string;
+  locations: Location[] | null;
 }
 
 export interface Vehicle {
@@ -41,16 +47,21 @@ export interface Ride {
 export interface Location {
   id: string;
   title: string;
+  notes: string;
   pickupRides: Ride[];
   dropOffRides: Ride[];
 }
 
-export interface RideData {
+export interface RideDataOnLocation {
+  Location: Location;
+}
+
+export interface LocationData {
   Location: Location;
 }
 
 export interface Response {
-  data: RideData;
+  data: RideDataOnLocation;
 }
 
 export interface TableData {
@@ -66,4 +77,12 @@ export interface TableData {
 
 export interface DriverData {
   allMembers: Member[];
+}
+
+interface MemberLocationData {
+  member: Member;
+}
+
+export interface MemberLocationResponse {
+  data: MemberLocationData;
 }

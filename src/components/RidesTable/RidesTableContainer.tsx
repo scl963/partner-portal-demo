@@ -1,15 +1,13 @@
 import moment, { Moment } from 'moment';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import { RideData, Ride, TableData } from '../../types';
+import { RideDataOnLocation, Ride, TableData, GenericComponentProps } from '../../types';
 import RidesTable from './RidesTable';
 import TableTools from './TableTools/TableTools';
 import { RIDES_QUERY } from './queries';
 import { filterTimes, compressRide } from '../utils';
-import { getLocation, getLocationTitle } from '../../utils/authUtils';
 import LoadingPage from '../LoadingPage/LoadingPage';
-import { tableContainerStyle, tablePageStyle } from '../styles';
-import DriverList from '../DriverList';
+import GenericContainer from '../GenericContainer';
 
 const today: string = moment().format('YYYY-MM-DD');
 const tomorrow: string = moment()
@@ -26,11 +24,7 @@ type State = Readonly<{
   endDate: string;
   filter: Filter;
   searchValue: string;
-  renderDriverList: boolean;
 }>;
-
-const locationId = getLocation();
-const locationTitle = getLocationTitle();
 
 interface Variables {
   start: string;
@@ -38,20 +32,14 @@ interface Variables {
   locationId: string;
 }
 
-class RidesForDayQuery extends Query<RideData, Variables> {}
+class RidesForDayQuery extends Query<RideDataOnLocation, Variables> {}
 
-class RidesTableContainer extends Component<{}, State> {
+class RidesTableContainer extends Component<GenericComponentProps, State> {
   readonly state: State = {
     startDate: today,
     endDate: tomorrow,
     filter: { times: 'allTimes', types: 'allTypes' },
     searchValue: '',
-    renderDriverList: false,
-  };
-
-  private toggleDriverList = () => {
-    const { renderDriverList } = this.state;
-    this.setState({ renderDriverList: !renderDriverList });
   };
 
   // This method is triggered by arrow buttons next to the date and moves start and end date by one
@@ -121,71 +109,50 @@ class RidesTableContainer extends Component<{}, State> {
 
   private renderStudentRoster() {
     const { startDate, endDate } = this.state;
+    const { locationId, locationTitle } = this.props;
     return (
-      <div className={tablePageStyle}>
-        <h2 style={{ margin: '.5em' }}>{`${locationTitle} Daily Roster`}</h2>
-        <div className={tableContainerStyle}>
-          <TableTools
-            day={moment(startDate).format('dddd, MMMM Do')}
-            moveDate={this.moveDate}
-            changeFilter={this.changeFilter}
-            handleSearch={this.handleSearch}
-            handleDatePicker={this.handleDatePicker}
-          />
-          <RidesForDayQuery
-            query={RIDES_QUERY}
-            variables={{ start: startDate, end: endDate, locationId }}
-          >
-            {({ loading, data, error }) => {
-              if (loading) {
-                return <LoadingPage />;
-              }
+      <GenericContainer title={`${locationTitle} Daily Roster`}>
+        <TableTools
+          day={moment(startDate).format('dddd, MMMM Do')}
+          moveDate={this.moveDate}
+          changeFilter={this.changeFilter}
+          handleSearch={this.handleSearch}
+          handleDatePicker={this.handleDatePicker}
+        />
+        <RidesForDayQuery
+          query={RIDES_QUERY}
+          variables={{ start: startDate, end: endDate, locationId }}
+        >
+          {({ loading, data, error }) => {
+            if (loading) {
+              return <LoadingPage />;
+            }
 
-              if (error) {
-                return `Error! ${error.message}`;
-              }
+            if (error) {
+              return `Error! ${error.message}`;
+            }
 
-              if (data) {
-                const { pickupRides, dropOffRides } = data.Location;
-                const { searchValue } = this.state;
-                const formattedData = this.formatStudentRoster(pickupRides, dropOffRides);
-                const tableData = this.applyFilters(formattedData);
-                return (
-                  <div>
-                    <RidesTable data={tableData} searchValue={searchValue} loading={loading} />
-                  </div>
-                );
-              } else {
-                return <div>There is no data to display</div>;
-              }
-            }}
-          </RidesForDayQuery>
-        </div>
-      </div>
-    );
-  }
-
-  private renderDriverList() {
-    return (
-      <div className={tablePageStyle}>
-        <h2 style={{ margin: '.5em' }}>Active Sheprd Drivers</h2>
-        <div className={tableContainerStyle}>
-          <DriverList />
-        </div>
-      </div>
+            if (data) {
+              const { pickupRides, dropOffRides } = data.Location;
+              const { searchValue } = this.state;
+              const formattedData = this.formatStudentRoster(pickupRides, dropOffRides);
+              const tableData = this.applyFilters(formattedData);
+              return (
+                <div>
+                  <RidesTable data={tableData} searchValue={searchValue} loading={loading} />
+                </div>
+              );
+            } else {
+              return <div>There is no data to display</div>;
+            }
+          }}
+        </RidesForDayQuery>
+      </GenericContainer>
     );
   }
 
   render() {
-    const { renderDriverList } = this.state;
-    return (
-      <div>
-        <button onClick={this.toggleDriverList}>
-          {renderDriverList ? 'Show daily roster' : 'Show Active Driver List'}
-        </button>
-        {renderDriverList ? this.renderDriverList() : locationId && this.renderStudentRoster()}
-      </div>
-    );
+    return <div>{this.props.locationId && this.renderStudentRoster()}</div>;
   }
 }
 
