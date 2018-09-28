@@ -34,19 +34,3 @@ export async function handleToken(apolloClient: any, token: string) {
   const { id, locations } = userQueryResponse.data.user.member;
   setMemberId(id);
 }
-
-export function setLocation(locationId: string) {
-  localStorage.setItem(LOCATION_ID, locationId);
-}
-
-export function getLocation() {
-  return localStorage.getItem(LOCATION_ID) || '';
-}
-
-export function setLocationTitle(locationTitle: string) {
-  localStorage.setItem(LOCATION_TITLE, locationTitle);
-}
-
-export function getLocationTitle() {
-  return localStorage.getItem(LOCATION_TITLE) || '';
-}

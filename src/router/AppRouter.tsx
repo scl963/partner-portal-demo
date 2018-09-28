@@ -5,18 +5,13 @@ import {
   RouteComponentProps,
   withRouter,
   Link,
+  Redirect,
 } from 'react-router-dom';
 import { Layout, Avatar, Button, Menu, Row, Dropdown } from 'antd';
 import { css } from 'react-emotion';
 import RidesTableContainer from '../components/RidesTable/RidesTableContainer';
 import Login from '../components/Login/Login';
-import {
-  removeAuthToken,
-  isAuthenticated,
-  setLocation,
-  setLocationTitle,
-  getMemberId,
-} from '../utils/authUtils';
+import { removeAuthToken, isAuthenticated, getMemberId } from '../utils/authUtils';
 import PrivateRoute from './PrivateRoute';
 import SheprdIcon from '../common/img/sheprd_icon.png';
 import SheprdLogo from '../common/img/sheprd_logo.png';
@@ -52,22 +47,42 @@ class AppLayout extends Component<RouterProps, State> {
   // Fetches list of member's owned locations to allow switching between them
   async fetchAllMemberLocations() {
     const memberId = getMemberId();
-    try {
-      if (process.env.REACT_APP_GRAPH_ENDPOINT) {
-        const { data } = await axios.post(process.env.REACT_APP_GRAPH_ENDPOINT, {
-          query: USER_LOCATIONS_QUERY(memberId),
-        });
-        const { locations } = data.data.Member;
-        const { id: currLocationId, title: currLocationTitle } = locations[0];
-        this.setState({ allLocations: locations, currLocationId, currLocationTitle });
+    if (memberId) {
+      try {
+        if (process.env.REACT_APP_GRAPH_ENDPOINT) {
+          const { data } = await axios.post(process.env.REACT_APP_GRAPH_ENDPOINT, {
+            query: USER_LOCATIONS_QUERY(memberId),
+          });
+          const { locations } = data.data.Member;
+          const { id: currLocationId, title: currLocationTitle } = locations[0];
+          this.setState({ allLocations: locations, currLocationId, currLocationTitle });
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   }
 
+  // Prevent call if on login screen
   componentDidMount() {
-    this.fetchAllMemberLocations();
+    return isAuthenticated() && this.fetchAllMemberLocations();
+  }
+
+  // Check to see if user was not logged in previously -- this is used to trigger location fetch on
+  // redirect from login
+  getSnapshotBeforeUpdate(prevProps: any, prevState: State) {
+    if (!prevState.isAuthenticated) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Only trigger fetch on login
+  componentDidUpdate(prevProps: any, prevState: State, snapshot: any) {
+    if (snapshot) {
+      this.fetchAllMemberLocations();
+    }
   }
 
   private toggleIsAuthenticated = () => this.setState(toggleIsAuthenticated);
@@ -122,7 +137,7 @@ class AppLayout extends Component<RouterProps, State> {
             <Menu.Item>
               <Link to="/driver-list">Driver List</Link>
             </Menu.Item>
-            <Menu.SubMenu key="myLocation" title={<span>My Location</span>}>
+            <Menu.SubMenu key="myLocation" title={<span>My Locations</span>}>
               <Menu.Item key="notes">
                 <Link to={'location-notes'}>Location Notes</Link>
               </Menu.Item>
@@ -159,37 +174,41 @@ class AppLayout extends Component<RouterProps, State> {
           exact={true}
           render={props => <Login onAuthenticated={this.toggleIsAuthenticated} {...props} />}
         />
-        <Layout>
-          {isAuthenticated() && this.renderMenuBar()}
-          <Layout.Content
-            className={css`
-              margin-top: 50px;
-              padding: 16px;
-            `}
-          >
-            <PrivateRoute
-              exact={true}
-              path="/daily-roster"
-              component={RidesTableContainer}
-              locationId={currLocationId}
-              locationTitle={currLocationTitle}
-            />
-            <PrivateRoute
-              exact={true}
-              path="/driver-list"
-              component={DriverList}
-              locationId={currLocationId}
-              locationTitle={currLocationTitle}
-            />
-            <PrivateRoute
-              exact={true}
-              path="/location-notes"
-              component={LocationNotes}
-              locationId={currLocationId}
-              locationTitle={currLocationTitle}
-            />
-          </Layout.Content>
-        </Layout>
+        {isAuthenticated() ? (
+          <Layout>
+            {isAuthenticated() && this.renderMenuBar()}
+            <Layout.Content
+              className={css`
+                margin-top: 50px;
+                padding: 16px;
+              `}
+            >
+              <PrivateRoute
+                exact={true}
+                path="/daily-roster"
+                component={RidesTableContainer}
+                locationId={currLocationId}
+                locationTitle={currLocationTitle}
+              />
+              <PrivateRoute
+                exact={true}
+                path="/driver-list"
+                component={DriverList}
+                locationId={currLocationId}
+                locationTitle={currLocationTitle}
+              />
+              <PrivateRoute
+                exact={true}
+                path="/location-notes"
+                component={LocationNotes}
+                locationId={currLocationId}
+                locationTitle={currLocationTitle}
+              />
+            </Layout.Content>
+          </Layout>
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
