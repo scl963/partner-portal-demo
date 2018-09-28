@@ -126,14 +126,12 @@ class AppLayout extends Component<RouterProps, State> {
               disabled={true}
               className={css`
                 cursor: default !important;
+                margin-top: -3px !important;
+                margin-bottom: 0px !important;
               `}
             >
-              <Avatar
-                src={SheprdIcon}
-                shape="square"
-                style={{ marginLeft: '1em', marginBottom: '7.5px' }}
-              />
-              <img src={SheprdLogo} width="66px" height="20px" style={{ marginBottom: '7.5px' }} />
+              <Avatar src={SheprdIcon} shape="square" style={{ marginLeft: '1em' }} />
+              <img src={SheprdLogo} width="66px" height="20px" />
             </Menu.Item>
             <Menu.Item>
               <Link to="daily-roster">Daily Roster</Link>
@@ -161,6 +159,7 @@ class AppLayout extends Component<RouterProps, State> {
             </Menu.SubMenu>
             <Menu.Item
               className={css`
+                margintop: 3px;
                 float: right;
                 border-bottom: 0 !important;
               `}
