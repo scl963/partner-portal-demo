@@ -6,10 +6,12 @@ import { createHttpLink } from 'apollo-link-http';
 import { config } from 'dotenv';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
-import './App.css';
 import HttpsRedirect from 'react-https-redirect';
+import runtimeEnv from '@mars/heroku-js-runtime-env';
 
-const env = config();
+import './App.css';
+
+const env = runtimeEnv();
 
 const httpLink = createHttpLink({ uri: process.env.REACT_APP_GRAPH_ENDPOINT });
 

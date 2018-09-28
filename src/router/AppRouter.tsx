@@ -21,6 +21,7 @@ import axios from 'axios';
 import { ApolloClient } from 'apollo-client';
 import { USER_LOCATIONS_QUERY } from '../queries';
 import { MemberLocationResponse, Location } from '../types';
+import runtimeEnv from '@mars/heroku-js-runtime-env';
 
 type State = Readonly<{
   isAuthenticated: boolean;
