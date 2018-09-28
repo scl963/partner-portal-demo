@@ -9,8 +9,11 @@ import SheprdIcon from '../../common/img/sheprd_icon.png';
 import SheprdLogo from '../../common/img/sheprd_logo.png';
 import { handleToken, isAuthenticated } from '../../utils/authUtils';
 import { userQuery } from '../../common/queries';
+import runtimeEnv from '@mars/heroku-js-runtime-env';
 
-const loginURL = `${process.env.REACT_APP_SERVER_DOMAIN}/loginUser`;
+const env = runtimeEnv();
+
+const loginURL = `${env.REACT_APP_SERVER_DOMAIN}/loginUser`;
 
 type State = Readonly<{ showForgotForm: boolean }>;
 

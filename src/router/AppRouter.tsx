@@ -23,6 +23,8 @@ import { USER_LOCATIONS_QUERY } from '../queries';
 import { MemberLocationResponse, Location } from '../types';
 import runtimeEnv from '@mars/heroku-js-runtime-env';
 
+const env = runtimeEnv();
+
 type State = Readonly<{
   isAuthenticated: boolean;
   currLocationId: string;
@@ -51,7 +53,7 @@ class AppLayout extends Component<RouterProps, State> {
     if (memberId) {
       try {
         if (process.env.REACT_APP_GRAPH_ENDPOINT) {
-          const { data } = await axios.post(process.env.REACT_APP_GRAPH_ENDPOINT, {
+          const { data } = await axios.post(env.REACT_APP_GRAPH_ENDPOINT, {
             query: USER_LOCATIONS_QUERY(memberId),
           });
           const { locations } = data.data.Member;
