@@ -4,14 +4,14 @@ export const tablePageStyle = css`
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-height: 93vh;
+  max-height: 90vh;
   @media (max-width: 1366px) {
     min-width: 100%;
   }
   @media (max-height: 800) {
     min-height: 100%;
     max-height: 100%;
-    margin-bottom: 160px;
+    margin-bottom: 80px;
   }
 `;
 
@@ -28,8 +28,9 @@ export const tableContainerStyle = css`
     margin-bottom: 80px;
   }
   @media (max-height: 800) {
+    min-width: 100%;
     min-height: 100%;
     max-height: 100%;
-    margin-bottom: 160px;
+    margin-bottom: 80px;
   }
 `;

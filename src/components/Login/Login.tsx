@@ -115,8 +115,12 @@ class Login extends Component<Props> {
                     />
                   </FormItem>
                   <FormItem className=".login-signup-field-width-half">
-                    <Button loading={isSubmitting}
- type="primary" htmlType="submit" className="login-submit-button">
+                    <Button
+                      loading={isSubmitting}
+                      type="primary"
+                      htmlType="submit"
+                      className="login-submit-button"
+                    >
                       Log in
                     </Button>
                     <div>

@@ -77,6 +77,8 @@ class RidesTable extends Component<RidesTableProps, State> {
 
   public render() {
     const { data, searchValue } = this.props;
+    const { innerHeight, innerWidth } = window;
+    const antHeight: number = innerHeight < 800 ? innerHeight * 0.3 : 600;
     let tableData: TableData[] = data;
     // Search by student name implemented here
     if (searchValue.length) {
@@ -92,7 +94,7 @@ class RidesTable extends Component<RidesTableProps, State> {
     }
 
     return (
-      <div style={{ marginBottom: '20px' }}>
+      <div>
         <AntTable
           rowClassName={(record, index) => {
             return record.status === 'Canceled' ? 'canceled-row' : '';
@@ -100,7 +102,7 @@ class RidesTable extends Component<RidesTableProps, State> {
           pagination={false}
           rowKey="id"
           size="small"
-          scroll={{ y: 600, x: 600 }}
+          scroll={{ y: antHeight, x: 600 }}
           columns={this.columns()}
           dataSource={tableData}
         />

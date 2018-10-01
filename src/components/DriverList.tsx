@@ -26,6 +26,7 @@ const columns: Array<ColumnProps<any>> = [
 
 class DriverList extends Component {
   render() {
+    const antHeight: number = innerHeight < 800 ? innerHeight * 0.6 : 700;
     return (
       <GenericContainer title="Active Sheprd Drivers">
         <ActiveDriverQuery query={DRIVER_QUERY}>
@@ -54,7 +55,7 @@ class DriverList extends Component {
                     rowKey="id"
                     size="small"
                     style={{ width: '500px' }}
-                    scroll={{ y: 700 }}
+                    scroll={{ y: antHeight }}
                     columns={columns}
                     dataSource={tableData}
                   />

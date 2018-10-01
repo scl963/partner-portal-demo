@@ -38,6 +38,7 @@ class LocationNotes extends Component<GenericComponentProps> {
                     justify-content: start;
                     align-content: center;
                     height: 70vh;
+                    width: 100%
                     margin: 2em;
                     font-size: 2em;
                     overflow: auto;

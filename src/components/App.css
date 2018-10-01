@@ -4,15 +4,29 @@
   text-align: center;
   display: flex;
   min-height: 100vh;
-  max-height: 100vw;
+  max-height: 100vh;
   overflow: auto;
 }
 
 body {
   font-family: 'Nunito', sans-serif !important;
   background: #f0f2f5;
+  min-height: 100vh;
+  max-height: 100vh;
+  min-width: 100vw;
+  max-width: 100vw;
 }
 
 #search-input {
   min-height: 0;
+}
+
+@media (min-width: 1200px) {
+  body {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
 }
