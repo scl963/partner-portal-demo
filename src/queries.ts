@@ -2,7 +2,10 @@ import gql from 'graphql-tag';
 
 export const DRIVER_QUERY = gql`
   query {
-    allMembers(filter: { driverStatus: Active, firstName_gt: "", lastName_gt: "" }) {
+    allMembers(
+      orderBy: lastName_ASC
+      filter: { driverStatus: Active, firstName_gt: "", lastName_gt: "" }
+    ) {
       id
       firstName
       lastName

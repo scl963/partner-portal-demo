@@ -41,11 +41,19 @@ class DriverList extends Component {
             if (data) {
               const tableData = data.allMembers;
               return (
-                <div style={{ marginBottom: '20px', marginTop: '20px' }}>
+                <div
+                  style={{
+                    marginBottom: '20px',
+                    marginTop: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
                   <Table
                     pagination={false}
                     rowKey="id"
                     size="small"
+                    style={{ width: '500px' }}
                     scroll={{ y: 700 }}
                     columns={columns}
                     dataSource={tableData}
