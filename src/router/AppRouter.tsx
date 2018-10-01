@@ -152,7 +152,7 @@ class AppLayout extends Component<RouterProps, State> {
                 key="myLocation"
                 title={
                   <span>
-                    Change Location <Icon type="down" />
+                    Change Location <Icon type="down" style={{ fontSize: '10px' }} />
                   </span>
                 }
               >
@@ -206,7 +206,7 @@ class AppLayout extends Component<RouterProps, State> {
             <Layout.Content
               className={css`
                 margin-top: 50px;
-                padding: 16px;
+                padding: 10px;
               `}
             >
               <PrivateRoute
