@@ -30,7 +30,6 @@ export function compressRide(ride: Ride, type: string) {
   if (route) {
     if (route.shift) {
       if (route.shift.members) {
-        console.log(route.shift.members[0]);
         driver = `${route.shift.members[0].firstName} ${route.shift.members[0].lastName}`;
       }
       if (route.shift.vehicles) {
