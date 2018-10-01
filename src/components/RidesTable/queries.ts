@@ -25,6 +25,8 @@ export const RIDES_QUERY = gql`
         }
         pickupRangeStart
         pickupRangeEnd
+        dropoffRangeStart
+        dropoffRangeEnd
         pickupMember {
           id
           firstName
@@ -52,6 +54,8 @@ export const RIDES_QUERY = gql`
         }
         pickupRangeStart
         pickupRangeEnd
+        dropoffRangeStart
+        dropoffRangeEnd
         pickupMember {
           firstName
           lastName

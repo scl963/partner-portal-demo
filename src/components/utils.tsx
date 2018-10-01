@@ -14,7 +14,15 @@ export function filterTimes(rides: TableData[], timeFilter: string) {
 }
 
 export function compressRide(ride: Ride, type: string) {
-  const { id, pickupRangeStart, pickupRangeEnd, route, status } = ride;
+  const {
+    id,
+    pickupRangeStart,
+    pickupRangeEnd,
+    dropoffRangeStart,
+    dropoffRangeEnd,
+    route,
+    status,
+  } = ride;
   let driver: string | null = 'N/A';
   let carName: string | null = 'N/A';
   let licensePlate: string | null = 'N/A';
@@ -32,8 +40,15 @@ export function compressRide(ride: Ride, type: string) {
     }
   }
   const student = `${ride.pickupMember.firstName} ${ride.pickupMember.lastName}`;
-  const startTime = moment(pickupRangeStart).format('HH:mm');
-  const endTime = moment(pickupRangeEnd).format('HH:mm');
+  const startTime =
+    type === 'Pickup'
+      ? moment(pickupRangeStart).format('HH:mm')
+      : moment(dropoffRangeStart).format('HH:mm');
+  const endTime =
+    type === 'Pickup'
+      ? moment(pickupRangeEnd).format('HH:mm')
+      : moment(dropoffRangeEnd).format('HH:mm');
+
   const date = moment(pickupRangeStart).format('YYYY-MM-DD');
   return {
     id,

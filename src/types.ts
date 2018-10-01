@@ -38,6 +38,8 @@ export interface Ride {
   status: string;
   pickupRangeStart: string;
   pickupRangeEnd: string;
+  dropoffRangeStart: string;
+  dropoffRangeEnd: string;
   pickupMember: PickupMember;
   type: string | undefined;
   date: string | undefined;

@@ -150,6 +150,7 @@ class AppLayout extends Component<RouterProps, State> {
             {allLocations.length > 1 ? (
               <Menu.SubMenu
                 key="myLocation"
+                style={{ width: '155px' }}
                 title={
                   <span>
                     Change Location <Icon type="down" style={{ fontSize: '10px' }} />
@@ -167,15 +168,6 @@ class AppLayout extends Component<RouterProps, State> {
             ) : (
               ''
             )}
-            {this.state.currLocationTitle ? (
-              <MenuItem id="locationTitle" disabled={true} className={navItemDisabledStyle}>
-                <span style={{ color: 'black', fontWeight: 'bold' }}>
-                  {this.state.currLocationTitle}
-                </span>
-              </MenuItem>
-            ) : (
-              ''
-            )}
             <Menu.Item
               className={css`
                 margintop: 3px;
@@ -185,6 +177,18 @@ class AppLayout extends Component<RouterProps, State> {
             >
               <Button onClick={this.logout}>Log Out</Button>
             </Menu.Item>
+            {this.state.currLocationTitle ? (
+              <MenuItem
+                style={{ float: 'right', top: '4px' }}
+                id="locationTitle"
+                disabled={true}
+                className={navItemDisabledStyle}
+              >
+                <span style={{ color: 'black' }}>{this.state.currLocationTitle}</span>
+              </MenuItem>
+            ) : (
+              ''
+            )}
           </Menu>
         </Row>
       </Layout.Header>
