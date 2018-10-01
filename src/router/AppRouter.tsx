@@ -184,7 +184,7 @@ class AppLayout extends Component<RouterProps, State> {
                 disabled={true}
                 className={navItemDisabledStyle}
               >
-                <span style={{ color: 'black' }}>{this.state.currLocationTitle}</span>
+                <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>{this.state.currLocationTitle}</span>
               </MenuItem>
             ) : (
               ''
