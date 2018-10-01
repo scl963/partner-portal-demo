@@ -35,15 +35,19 @@ class LocationNotes extends Component<GenericComponentProps> {
                   className={css`
                     display: flex;
                     flex-direction: column;
+                    justify-content: start;
                     align-content: center;
-                    justify-content: center;
+                    height: 70vh;
                     margin: 2em;
                     font-size: 2em;
                     overflow: auto;
                   `}
                 >
                   <div>
-                    <p>Notes: {data.Location.notes}</p>
+                    <p>Pickup Notes: {data.Location.pickupNotes}</p>
+                  </div>
+                  <div>
+                    <p>Dropoff Notes: {data.Location.dropOffNotes}</p>
                   </div>
                   <div>
                     <p style={{ fontSize: '0.8em', color: 'red' }}>

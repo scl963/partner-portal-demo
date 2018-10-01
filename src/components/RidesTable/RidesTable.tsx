@@ -100,7 +100,7 @@ class RidesTable extends Component<RidesTableProps, State> {
           pagination={false}
           rowKey="id"
           size="small"
-          scroll={{ y: 590, x: 600 }}
+          scroll={{ y: 600, x: 600 }}
           columns={this.columns()}
           dataSource={tableData}
         />

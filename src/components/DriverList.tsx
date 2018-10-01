@@ -35,7 +35,7 @@ class DriverList extends Component {
             }
 
             if (error) {
-              return `Error! ${error.message}`;
+              return `Error loading driver list. Please try refreshing the page.`;
             }
 
             if (data) {

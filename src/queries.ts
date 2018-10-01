@@ -16,7 +16,8 @@ export const DRIVER_QUERY = gql`
 export const LOCATION_QUERY = gql`
   query locationQuery($locationId: ID!) {
     Location(id: $locationId) {
-      notes
+      pickupNotes
+      dropOffNotes
     }
   }
 `;

@@ -47,7 +47,8 @@ export interface Ride {
 export interface Location {
   id: string;
   title: string;
-  notes: string;
+  pickupNotes: string;
+  dropOffNotes: string;
   pickupRides: Ride[];
   dropOffRides: Ride[];
 }

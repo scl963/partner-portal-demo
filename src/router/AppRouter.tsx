@@ -7,7 +7,7 @@ import {
   Link,
   Redirect,
 } from 'react-router-dom';
-import { Layout, Avatar, Button, Menu, Row, Dropdown } from 'antd';
+import { Layout, Avatar, Button, Menu, Row, Dropdown, Icon } from 'antd';
 import { css } from 'react-emotion';
 import RidesTableContainer from '../components/RidesTable/RidesTableContainer';
 import Login from '../components/Login/Login';
@@ -22,8 +22,20 @@ import { ApolloClient } from 'apollo-client';
 import { USER_LOCATIONS_QUERY } from '../queries';
 import { MemberLocationResponse, Location } from '../types';
 import runtimeEnv from '@mars/heroku-js-runtime-env';
+import MenuItem from 'antd/lib/menu/MenuItem';
 
 const env = runtimeEnv();
+
+// This style is used to override Ant styling on disabled items
+const navItemDisabledStyle = css`
+  cursor: default !important;
+  margin-top: -3px !important;
+  margin-bottom: 0px !important;
+  font-weight: 10px;
+  .ant-menu-item-disabled {
+    color: black !important;
+  }
+`;
 
 type State = Readonly<{
   isAuthenticated: boolean;
@@ -122,14 +134,7 @@ class AppLayout extends Component<RouterProps, State> {
       >
         <Row>
           <Menu mode="horizontal" style={{ height: '50px', whiteSpace: 'normal' }}>
-            <Menu.Item
-              disabled={true}
-              className={css`
-                cursor: default !important;
-                margin-top: -3px !important;
-                margin-bottom: 0px !important;
-              `}
-            >
+            <Menu.Item disabled={true} className={navItemDisabledStyle}>
               <Avatar src={SheprdIcon} shape="square" style={{ marginLeft: '1em' }} />
               <img src={SheprdLogo} width="66px" height="20px" />
             </Menu.Item>
@@ -139,24 +144,38 @@ class AppLayout extends Component<RouterProps, State> {
             <Menu.Item>
               <Link to="/driver-list">Driver List</Link>
             </Menu.Item>
-            <Menu.SubMenu key="myLocation" title={<span>My Locations</span>}>
-              <Menu.Item key="notes">
-                <Link to={'location-notes'}>Location Notes</Link>
-              </Menu.Item>
-              {allLocations.length > 1 ? (
-                <Menu.SubMenu key="allLocations" title={<span>Change Location</span>}>
-                  {allLocations.map(l => {
-                    return (
-                      <Menu.Item key={l.id} onClick={() => this.changeLocation(l.id, l.title)}>
-                        {l.title}
-                      </Menu.Item>
-                    );
-                  })}
-                </Menu.SubMenu>
-              ) : (
-                ''
-              )}
-            </Menu.SubMenu>
+            <Menu.Item key="notes">
+              <Link to={'location-notes'}>Location Notes</Link>
+            </Menu.Item>
+            {allLocations.length > 1 ? (
+              <Menu.SubMenu
+                key="myLocation"
+                title={
+                  <span>
+                    Change Location <Icon type="down" />
+                  </span>
+                }
+              >
+                {allLocations.map(l => {
+                  return (
+                    <Menu.Item key={l.id} onClick={() => this.changeLocation(l.id, l.title)}>
+                      {l.title}
+                    </Menu.Item>
+                  );
+                })}
+              </Menu.SubMenu>
+            ) : (
+              ''
+            )}
+            {this.state.currLocationTitle ? (
+              <MenuItem id="locationTitle" disabled={true} className={navItemDisabledStyle}>
+                <span style={{ color: 'black', fontWeight: 'bold' }}>
+                  {this.state.currLocationTitle}
+                </span>
+              </MenuItem>
+            ) : (
+              ''
+            )}
             <Menu.Item
               className={css`
                 margintop: 3px;
