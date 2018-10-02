@@ -12,7 +12,7 @@ interface GenericContainerProps {
 const GenericContainer: SFC<GenericContainerProps> = props => {
   return (
     <div className={tablePageStyle}>
-      <h2 style={{ marginBottom: '.5em' }}>{props.title}</h2>
+      <h2 style={{ marginBottom: '1em', marginTop: '1em' }}>{props.title}</h2>
       <div className={tableContainerStyle}>{props.children}</div>
     </div>
   );

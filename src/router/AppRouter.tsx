@@ -136,7 +136,7 @@ class AppLayout extends Component<RouterProps, State> {
           <Menu mode="horizontal" style={{ height: '50px', whiteSpace: 'normal' }}>
             <Menu.Item disabled={true} className={navItemDisabledStyle}>
               <Avatar src={SheprdIcon} shape="square" style={{ marginLeft: '1em' }} />
-              <img src={SheprdLogo} width="66px" height="20px" />
+              <img style={{ marginLeft: '1em' }} src={SheprdLogo} width="118px" height="32px" />
             </Menu.Item>
             <Menu.Item>
               <Link to="daily-roster">Daily Roster</Link>

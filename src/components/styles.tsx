@@ -6,7 +6,7 @@ export const tablePageStyle = css`
   flex-direction: column;
   max-height: 90vh;
   @media (max-width: 1366px) {
-    min-width: 100%;
+    width: 100vw;
   }
   @media (max-height: 800) {
     min-height: 100%;
@@ -23,7 +23,7 @@ export const tableContainerStyle = css`
   background: white;
   border-radius: 1.5em;
   @media (max-width: 1366px) {
-    min-width: 100%;
+    width: 100vw;
     border-radius: 1.5em;
     margin-bottom: 80px;
   }
