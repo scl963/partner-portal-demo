@@ -35,19 +35,19 @@ class LocationNotes extends Component<GenericComponentProps> {
                   className={css`
                     display: flex;
                     flex-direction: column;
-                    justify-content: start;
                     align-content: center;
                     height: 70vh;
                     width: 100%;
                     margin: 2em;
                     font-size: 2em;
                     overflow: auto;
+                    word-wrap: break-word;
                   `}
                 >
-                  <div>
+                  <div style={{ width: '90%' }}>
                     <p>Pickup Notes: {data.Location.pickupNotes}</p>
                   </div>
-                  <div>
+                  <div style={{ width: '90%' }}>
                     <p>Dropoff Notes: {data.Location.dropOffNotes}</p>
                   </div>
                   <div>
