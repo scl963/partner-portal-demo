@@ -211,6 +211,7 @@ class AppLayout extends Component<RouterProps, State> {
               className={css`
                 margin-top: 50px;
                 padding: 10px;
+                width: 100% !important;
               `}
             >
               <PrivateRoute
