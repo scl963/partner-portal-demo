@@ -215,13 +215,6 @@ class AppLayout extends Component<RouterProps, State> {
               `}
             >
               <PrivateRoute
-                exact={false}
-                path="/"
-                component={RidesTableContainer}
-                locationId={currLocationId}
-                locationTitle={currLocationTitle}
-              />
-              <PrivateRoute
                 exact={true}
                 path="/daily-roster"
                 component={RidesTableContainer}
