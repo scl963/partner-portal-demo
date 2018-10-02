@@ -206,7 +206,7 @@ class AppLayout extends Component<RouterProps, State> {
         />
         {isAuthenticated() ? (
           <Layout>
-            {isAuthenticated() && this.renderMenuBar()}
+            {this.renderMenuBar()}
             <Layout.Content
               className={css`
                 margin-top: 50px;
@@ -215,7 +215,7 @@ class AppLayout extends Component<RouterProps, State> {
               `}
             >
               <PrivateRoute
-                exact={true}
+                exact={false}
                 path="/"
                 component={RidesTableContainer}
                 locationId={currLocationId}

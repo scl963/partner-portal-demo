@@ -38,7 +38,7 @@ export function compressRide(ride: Ride, type: string) {
       }
     }
   }
-  const student = `${ride.pickupMember.firstName} ${ride.pickupMember.lastName}`;
+  const student = `Test Student`;
   const startTime =
     type === 'Pickup'
       ? moment(pickupRangeStart).format('HH:mm')
