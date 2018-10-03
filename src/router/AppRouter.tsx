@@ -6,6 +6,7 @@ import {
   withRouter,
   Link,
   Redirect,
+  Switch,
 } from 'react-router-dom';
 import { Layout, Avatar, Button, Menu, Row, Dropdown, Icon } from 'antd';
 import { css } from 'react-emotion';
@@ -214,27 +215,36 @@ class AppLayout extends Component<RouterProps, State> {
                 width: 100% !important;
               `}
             >
-              <PrivateRoute
-                exact={true}
-                path="/daily-roster"
-                component={RidesTableContainer}
-                locationId={currLocationId}
-                locationTitle={currLocationTitle}
-              />
-              <PrivateRoute
-                exact={true}
-                path="/driver-list"
-                component={DriverList}
-                locationId={currLocationId}
-                locationTitle={currLocationTitle}
-              />
-              <PrivateRoute
-                exact={true}
-                path="/location-notes"
-                component={LocationNotes}
-                locationId={currLocationId}
-                locationTitle={currLocationTitle}
-              />
+              <Switch>
+                <PrivateRoute
+                  exact={true}
+                  path="/daily-roster"
+                  component={RidesTableContainer}
+                  locationId={currLocationId}
+                  locationTitle={currLocationTitle}
+                />
+                <PrivateRoute
+                  exact={true}
+                  path="/driver-list"
+                  component={DriverList}
+                  locationId={currLocationId}
+                  locationTitle={currLocationTitle}
+                />
+                <PrivateRoute
+                  exact={true}
+                  path="/location-notes"
+                  component={LocationNotes}
+                  locationId={currLocationId}
+                  locationTitle={currLocationTitle}
+                />
+                <Route
+                  exact={true}
+                  path="*"
+                  render={() => <Redirect to="daily-roster" />}
+                  locationId={currLocationId}
+                  locationTitle={currLocationTitle}
+                />
+              </Switch>
             </Layout.Content>
           </Layout>
         ) : (

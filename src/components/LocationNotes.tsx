@@ -42,6 +42,9 @@ class LocationNotes extends Component<GenericComponentProps> {
                     font-size: 2em;
                     overflow: auto;
                     word-wrap: break-word;
+                    @media (max-width: 830px) {
+                      margin: 0.5em;
+                    }
                   `}
                 >
                   <div style={{ width: '90%' }}>
@@ -50,7 +53,11 @@ class LocationNotes extends Component<GenericComponentProps> {
                   <div style={{ width: '90%' }}>
                     <p>Dropoff Notes: {data.Location.dropOffNotes}</p>
                   </div>
-                  <div>
+                  <div
+                    style={{
+                      width: '90%',
+                    }}
+                  >
                     <p style={{ fontSize: '0.8em', color: 'red' }}>
                       **If these notes are incorrect or incomplete, please call Sheprd customer
                       service at (617) 564-0725**

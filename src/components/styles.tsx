@@ -6,11 +6,12 @@ export const tablePageStyle = css`
   flex-direction: column;
   max-height: 90vh;
   @media (max-width: 1366px) {
-    width: 100vw;
+    width: 100%;
   }
   @media (max-height: 800) {
     min-height: 100%;
     max-height: 100%;
+    width: 100%;
     margin-bottom: 80px;
   }
 `;
@@ -23,14 +24,13 @@ export const tableContainerStyle = css`
   background: white;
   border-radius: 1.5em;
   @media (max-width: 1366px) {
-    width: 100vw;
+    width: 100%;
     border-radius: 1.5em;
     margin-bottom: 80px;
   }
   @media (max-height: 800) {
-    min-width: 100%;
-    min-height: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     margin-bottom: 80px;
   }
 `;
