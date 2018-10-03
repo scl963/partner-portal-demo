@@ -122,7 +122,7 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
         <RidesForDayQuery
           query={RIDES_QUERY}
           variables={{ start: startDate, end: endDate, locationId }}
-          pollInterval={1000 * 60}
+          pollInterval={1000 * 60 * 3}
         >
           {({ loading, data, error }) => {
             if (loading) {

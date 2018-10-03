@@ -59,8 +59,10 @@ class LocationNotes extends Component<GenericComponentProps> {
                     }}
                   >
                     <p style={{ fontSize: '0.8em', color: 'red' }}>
-                      **If these notes are incorrect or incomplete, please call Sheprd customer
-                      service at (617) 564-0725**
+                      **If these notes are incorrect or incomplete, please email any corrections to
+                      Sheprd customer service at{' '}
+                      {<a href="mailto:hello@sheprd.com">hello@sheprd.com</a>}
+                      **
                     </p>
                   </div>
                 </div>
