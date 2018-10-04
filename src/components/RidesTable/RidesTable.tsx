@@ -16,6 +16,10 @@ type State = Readonly<{
   tableData: TableData[];
 }>;
 
+interface MyElement extends HTMLElement {
+  offsetHeight: number;
+}
+
 class AntTable extends Table<TableData> {}
 
 class RidesTable extends Component<RidesTableProps, State> {
@@ -78,7 +82,8 @@ class RidesTable extends Component<RidesTableProps, State> {
   public render() {
     const { data, searchValue } = this.props;
     const { innerHeight, innerWidth } = window;
-    const antHeight: number = innerHeight < 800 ? innerHeight * 0.3 : 600;
+    console.log(innerHeight);
+    const antHeight: number = innerHeight < 800 ? innerHeight * 0.5 : 600;
     let tableData: TableData[] = data;
     // Search by student name implemented here
     if (searchValue.length) {

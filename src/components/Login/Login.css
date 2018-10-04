@@ -75,7 +75,7 @@ label {
   width: 50% !important;
 }
 
-@media (max-width: 813px) {
+@media (max-width: 760px) {
   .login-signup-field-width-half,
   .login-submit-button {
     width: 100% !important;
@@ -89,8 +89,9 @@ label {
   }
 }
 
-@media (max-height: 800px) {
+@media (max-height: 1200px) {
   .login-page-container {
-    height: 100% !important;
+    height: 100vh !important;
+    overflow: auto !important;
   }
 }

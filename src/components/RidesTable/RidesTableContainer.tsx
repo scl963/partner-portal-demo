@@ -139,7 +139,7 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
               const formattedData = this.formatStudentRoster(pickupRides, dropOffRides);
               const tableData = this.applyFilters(formattedData);
               return (
-                <div>
+                <div id="rideTableWrapper">
                   <RidesTable data={tableData} searchValue={searchValue} loading={loading} />
                 </div>
               );

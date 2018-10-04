@@ -19,7 +19,7 @@ body {
   min-height: 0;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1000px) {
   body {
     position: fixed;
     left: 0;
