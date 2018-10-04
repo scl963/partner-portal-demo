@@ -1,5 +1,5 @@
 import React, { SFC } from 'react';
-import { Icon, Row, Select, Input, DatePicker } from 'antd';
+import { Icon, Row, Select, Input, DatePicker, Button } from 'antd';
 import './TableTools.css';
 import { Moment } from 'moment';
 
@@ -12,13 +12,20 @@ interface ToolsProps {
   changeFilter: (property: string, value: any) => void;
   handleSearch: (searchValue: string) => void;
   handleDatePicker: (date: Moment) => void;
+  print: () => void;
 }
 
 const TableTools: SFC<ToolsProps> = props => {
   return (
     <div className="tools-container">
-      <Row type="flex" justify="start" style={{ margin: '1em' }}>
+      <Row type="flex" justify="space-between" style={{ margin: '1em' }}>
         <DatePicker allowClear={false} onChange={e => props.handleDatePicker(e)} />
+        <Button onClick={props.print} style={{ marginRight: '1.3em' }}>
+          <span>
+            <Icon type="printer" />
+          </span>
+          <span> Print Roster</span>
+        </Button>
       </Row>
       <Row type="flex" justify="start">
         <div style={{ margin: '1em' }}>

@@ -24,6 +24,7 @@ type State = Readonly<{
   endDate: string;
   filter: Filter;
   searchValue: string;
+  printView: boolean;
 }>;
 
 interface Variables {
@@ -40,6 +41,7 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
     endDate: tomorrow,
     filter: { times: 'allTimes', types: 'allTypes' },
     searchValue: '',
+    printView: false,
   };
 
   // This method is triggered by arrow buttons next to the date and moves start and end date by one
@@ -57,6 +59,12 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
       startDate,
       endDate,
     });
+  };
+
+  private print = async () => {
+    await this.setState({ printView: true });
+    window.print();
+    this.setState({ printView: false });
   };
 
   private handleDatePicker = (date: Moment) => {
@@ -118,6 +126,7 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
           changeFilter={this.changeFilter}
           handleSearch={this.handleSearch}
           handleDatePicker={this.handleDatePicker}
+          print={this.print}
         />
         <RidesForDayQuery
           query={RIDES_QUERY}
@@ -135,12 +144,17 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
 
             if (data) {
               const { pickupRides, dropOffRides } = data.Location;
-              const { searchValue } = this.state;
+              const { searchValue, printView } = this.state;
               const formattedData = this.formatStudentRoster(pickupRides, dropOffRides);
               const tableData = this.applyFilters(formattedData);
               return (
                 <div id="rideTableWrapper">
-                  <RidesTable data={tableData} searchValue={searchValue} loading={loading} />
+                  <RidesTable
+                    data={tableData}
+                    searchValue={searchValue}
+                    loading={loading}
+                    printView={printView}
+                  />
                 </div>
               );
             } else {

@@ -10,6 +10,7 @@ interface RidesTableProps {
   data: TableData[];
   searchValue: string;
   loading: boolean;
+  printView: boolean;
 }
 
 type State = Readonly<{
@@ -81,8 +82,7 @@ class RidesTable extends Component<RidesTableProps, State> {
 
   public render() {
     const { data, searchValue } = this.props;
-    const { innerHeight, innerWidth } = window;
-    console.log(innerHeight);
+    const { innerHeight } = window;
     const antHeight: number = innerHeight < 800 ? innerHeight * 0.5 : 600;
     let tableData: TableData[] = data;
     // Search by student name implemented here
@@ -97,6 +97,7 @@ class RidesTable extends Component<RidesTableProps, State> {
       const fuse = new Fuse(tableData, options);
       tableData = fuse.search(searchValue);
     }
+    const scroll = this.props.printView ? { x: false, y: false } : { x: 600, y: antHeight };
 
     return (
       <div>
@@ -107,7 +108,7 @@ class RidesTable extends Component<RidesTableProps, State> {
           pagination={false}
           rowKey="id"
           size="small"
-          scroll={{ y: antHeight, x: 600 }}
+          scroll={scroll}
           columns={this.columns()}
           dataSource={tableData}
         />
