@@ -24,6 +24,12 @@ const columns: Array<ColumnProps<any>> = [
   },
 ];
 
+const invalidDriverIds = [
+  'cjmge3dsu1y1u0117klcijftz',
+  'cjlr7ardj150p0191svunl0ik',
+  'cjnag1kpz062p0164bbpemrnp',
+];
+
 class DriverList extends Component {
   render() {
     const antHeight: number = innerHeight < 800 ? innerHeight * 0.6 : 700;
@@ -40,7 +46,9 @@ class DriverList extends Component {
             }
 
             if (data) {
-              const tableData = data.allMembers;
+              const tableData = data.allMembers.filter(member =>
+                invalidDriverIds.every(id => id !== member.id),
+              );
               return (
                 <div
                   style={{
