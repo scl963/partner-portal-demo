@@ -1,5 +1,7 @@
 # Partner Portal Demo Version
 
+![Alt text](https://user-images.githubusercontent.com/7533654/47751540-6e4c3e00-dc68-11e8-88a2-9ba4a641d4dc.png "Roster View")
+
 This is a web app I created while working at Sheprd to allow people at partner organizations, such as school administrators and coordinators of after-school activities, to access real-time data about rides to and from their facilities. It was built using TypeScript, React, and Apollo for GraphQL query and local data management. 
 
 This is a demo version that is being shared with the permission of my former employer. The database connection and authentication scheme have been removed and mock data added in order to provide a testable version of the user interface. Additionally, most of the Apollo query components have been pulled out and some typings changed in order to simplify the demo. 
