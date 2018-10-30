@@ -16,8 +16,10 @@ export function setAuthToken(token: string) {
 }
 
 export function isAuthenticated(): boolean {
-  const expirationDate = localStorage.getItem('auth_token_expiration');
-  return !!expirationDate && isAfter(expirationDate, new Date());
+  const token = localStorage.getItem('auth_token');
+  // const expirationDate = localStorage.getItem('auth_token_expiration');
+  // return !!expirationDate && isAfter(expirationDate, new Date());
+  return token ? true : false;
 }
 
 export function setMemberId(memberId: string) {
@@ -30,7 +32,7 @@ export function getMemberId() {
 
 export async function handleToken(apolloClient: any, token: string) {
   setAuthToken(token);
-  const userQueryResponse = await apolloClient.query({ query: userQuery });
-  const { id, locations } = userQueryResponse.data.user.member;
-  setMemberId(id);
+  // const userQueryResponse = await apolloClient.query({ query: userQuery });
+  // const { id, locations } = userQueryResponse.data.user.member;
+  setMemberId('12345');
 }

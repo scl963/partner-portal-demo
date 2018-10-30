@@ -7,12 +7,13 @@ import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import HttpsRedirect from 'react-https-redirect';
 import runtimeEnv from '@mars/heroku-js-runtime-env';
+import { MockedProvider } from 'react-apollo/test-utils';
 
 import './App.css';
 
 const env = runtimeEnv();
 
-const httpLink = createHttpLink({ uri: env.REACT_APP_GRAPH_ENDPOINT });
+const httpLink = createHttpLink({ uri: 'test' });
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('auth_token');

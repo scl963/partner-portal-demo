@@ -1,5 +1,8 @@
 {
   "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
+  "jsRules": {
+    "object-literal-sort-keys": false
+  },
   "rules": {
     "align": [true, "parameters", "arguments", "statements"],
     "ban": false,

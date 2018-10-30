@@ -55,9 +55,26 @@ type RouterProps = RouteComponentProps<any> & { client: ApolloClient<MemberLocat
 class AppLayout extends Component<RouterProps, State> {
   state: State = {
     isAuthenticated: isAuthenticated(),
-    currLocationId: '',
-    currLocationTitle: '',
-    allLocations: [],
+    currLocationId: '12345',
+    currLocationTitle: 'Test Location 1',
+    allLocations: [
+      {
+        id: '1234',
+        title: 'Test Location 1',
+        pickupNotes: '',
+        dropOffNotes: '',
+        pickupRides: [],
+        dropOffRides: [],
+      },
+      {
+        id: '2345',
+        title: 'Test Location 2',
+        pickupNotes: '',
+        dropOffNotes: '',
+        pickupRides: [],
+        dropOffRides: [],
+      },
+    ],
   };
 
   // Fetches list of member's owned locations to allow switching between them
@@ -81,26 +98,26 @@ class AppLayout extends Component<RouterProps, State> {
 
   // Prevent call if on login screen but do call if logged in user comes back to site without going
   // through login
-  componentDidMount() {
-    return isAuthenticated() && this.fetchAllMemberLocations();
-  }
+  // componentDidMount() {
+  //   return isAuthenticated() && this.fetchAllMemberLocations();
+  // }
 
   // Check to see if user was not logged in previously -- this is used to trigger location fetch on
   // redirect from login
-  getSnapshotBeforeUpdate(prevProps: any, prevState: State) {
-    if (!prevState.isAuthenticated) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // getSnapshotBeforeUpdate(prevProps: any, prevState: State) {
+  //   if (!prevState.isAuthenticated) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   // Only trigger location fetch on login
-  componentDidUpdate(prevProps: any, prevState: State, snapshot: any) {
-    if (snapshot) {
-      this.fetchAllMemberLocations();
-    }
-  }
+  // componentDidUpdate(prevProps: any, prevState: State, snapshot: any) {
+  //   if (snapshot) {
+  //     this.fetchAllMemberLocations();
+  //   }
+  // }
 
   private toggleIsAuthenticated = () => this.setState(toggleIsAuthenticated);
 
@@ -114,7 +131,7 @@ class AppLayout extends Component<RouterProps, State> {
   };
 
   private logout = () => {
-    removeAuthToken();
+    // removeAuthToken();
     localStorage.clear();
     this.setState(toggleIsAuthenticated);
   };

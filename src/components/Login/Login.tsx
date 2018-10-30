@@ -48,20 +48,20 @@ class Login extends Component<Props> {
     { setSubmitting, setFieldError },
   ) => {
     try {
-      const res = await axios.post(loginURL, {
-        email,
-        password,
-      });
-      const { token } = res.data;
-      handleToken(client, token);
-      const {
-        data: { user },
-      } = await client.query<any>({
-        query: userQuery,
-      });
+      //   const res = await axios.post(loginURL, {
+      //     email,
+      //     password,
+      //   });
+      //   const { token } = res.data;
+      handleToken(client, 'TEST.TOKEN12343');
+      //   const {
+      //     data: { user },
+      //   } = await client.query<any>({
+      //     query: userQuery,
+      //   });
       await this.props.onAuthenticated();
-      // Timeout needed to allow location query to fire
-      await setTimeout(() => null, 200);
+      //   // Timeout needed to allow location query to fire
+      // await setTimeout(() => null, 200);
       return <Redirect to="/daily-roster" />;
     } catch (e) {
       console.error(e);

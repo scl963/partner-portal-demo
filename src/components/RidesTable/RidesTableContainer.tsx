@@ -8,6 +8,7 @@ import { RIDES_QUERY } from './queries';
 import { filterTimes, compressRide } from '../utils';
 import LoadingPage from '../LoadingPage/LoadingPage';
 import GenericContainer from '../GenericContainer';
+import { mockLocationData } from '../MockData';
 
 const today: string = moment().format('YYYY-MM-DD');
 const tomorrow: string = moment()
@@ -105,7 +106,7 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
   };
 
   // Combines pickups and dropoffs and formats data for Ant Table component
-  private formatStudentRoster(pickupRides: Ride[], dropOffRides: Ride[]) {
+  private formatStudentRoster(pickupRides: any[], dropOffRides: any[]) {
     const dropoffs = dropOffRides.map(ride => {
       return compressRide(ride, 'Dropoff');
     });
@@ -118,6 +119,12 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
   private renderStudentRoster() {
     const { startDate, endDate } = this.state;
     const { locationId, locationTitle } = this.props;
+    const { data } = mockLocationData;
+    const { pickupRides, dropOffRides } = data.Location;
+    const { searchValue, printView } = this.state;
+    const formattedData = this.formatStudentRoster(pickupRides, dropOffRides);
+    const tableData = this.applyFilters(formattedData);
+    console.log(tableData);
     return (
       <GenericContainer title={`${locationTitle} Daily Roster`}>
         <TableTools
@@ -128,40 +135,9 @@ class RidesTableContainer extends Component<GenericComponentProps, State> {
           handleDatePicker={this.handleDatePicker}
           print={this.print}
         />
-        <RidesForDayQuery
-          query={RIDES_QUERY}
-          variables={{ start: startDate, end: endDate, locationId }}
-          pollInterval={1000 * 60 * 3}
-        >
-          {({ loading, data, error }) => {
-            if (loading) {
-              return <LoadingPage />;
-            }
-
-            if (error) {
-              return `Error! ${error.message}`;
-            }
-
-            if (data) {
-              const { pickupRides, dropOffRides } = data.Location;
-              const { searchValue, printView } = this.state;
-              const formattedData = this.formatStudentRoster(pickupRides, dropOffRides);
-              const tableData = this.applyFilters(formattedData);
-              return (
-                <div id="rideTableWrapper">
-                  <RidesTable
-                    data={tableData}
-                    searchValue={searchValue}
-                    loading={loading}
-                    printView={printView}
-                  />
-                </div>
-              );
-            } else {
-              return <div>There is no data to display</div>;
-            }
-          }}
-        </RidesForDayQuery>
+        <div id="rideTableWrapper">
+          <RidesTable data={tableData} searchValue={searchValue} printView={printView} />
+        </div>
       </GenericContainer>
     );
   }

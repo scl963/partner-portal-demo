@@ -5,6 +5,7 @@ import { LOCATION_QUERY } from '../queries';
 import LoadingPage from './LoadingPage/LoadingPage';
 import GenericContainer from './GenericContainer';
 import { css } from 'react-emotion';
+import { mockNotesData } from './MockData';
 
 interface Variables {
   locationId: string;
@@ -14,9 +15,10 @@ class LocationNotesQuery extends Query<LocationData, Variables> {}
 
 class LocationNotes extends Component<GenericComponentProps> {
   render() {
+    const { data } = mockNotesData;
     return (
       <GenericContainer title={`Location Notes for ${this.props.locationTitle}`}>
-        <LocationNotesQuery
+        {/* <LocationNotesQuery
           query={LOCATION_QUERY}
           variables={{ locationId: this.props.locationId }}
         >
@@ -30,48 +32,47 @@ class LocationNotes extends Component<GenericComponentProps> {
             }
 
             if (data) {
-              return (
-                <div
-                  className={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-content: center;
-                    height: 70vh;
-                    width: 100%;
-                    margin: 2em;
-                    font-size: 2em;
-                    overflow: auto;
-                    word-wrap: break-word;
-                    @media (max-width: 830px) {
-                      margin: 0.5em;
-                    }
-                  `}
-                >
-                  <div style={{ width: '90%' }}>
-                    <p>Pickup Notes: {data.Location.pickupNotes}</p>
-                  </div>
-                  <div style={{ width: '90%' }}>
-                    <p>Dropoff Notes: {data.Location.dropOffNotes}</p>
-                  </div>
-                  <div
-                    style={{
-                      width: '90%',
-                    }}
-                  >
-                    <p style={{ fontSize: '0.8em', color: 'red' }}>
-                      **If these notes are incorrect or incomplete, please email any corrections to
-                      Sheprd customer service at{' '}
-                      {<a href="mailto:hello@sheprd.com">hello@sheprd.com</a>}
-                      **
-                    </p>
-                  </div>
-                </div>
-              );
+              return ( */}
+        <div
+          className={css`
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            height: 70vh;
+            width: 100%;
+            margin: 2em;
+            font-size: 2em;
+            overflow: auto;
+            word-wrap: break-word;
+            @media (max-width: 830px) {
+              margin: 0.5em;
+            }
+          `}
+        >
+          <div style={{ width: '90%' }}>
+            <p>Pickup Notes: {data.Location.pickupNotes}</p>
+          </div>
+          <div style={{ width: '90%' }}>
+            <p>Dropoff Notes: {data.Location.dropOffNotes}</p>
+          </div>
+          <div
+            style={{
+              width: '90%',
+            }}
+          >
+            <p style={{ fontSize: '0.8em', color: 'red' }}>
+              **If these notes are incorrect or incomplete, please email any corrections to Sheprd
+              customer service at {<a href="mailto:test@test.com">test@test.com</a>}
+              **
+            </p>
+          </div>
+        </div>
+        {/* );
             } else {
               return <p>Error loading notes. Please try refreshing the page</p>;
             }
           }}
-        </LocationNotesQuery>
+        </LocationNotesQuery> */}
       </GenericContainer>
     );
   }

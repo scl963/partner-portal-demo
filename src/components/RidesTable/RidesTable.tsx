@@ -9,7 +9,6 @@ import './RidesTable.css';
 interface RidesTableProps {
   data: TableData[];
   searchValue: string;
-  loading: boolean;
   printView: boolean;
 }
 
